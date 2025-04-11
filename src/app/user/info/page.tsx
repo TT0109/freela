@@ -4,6 +4,7 @@ import { useUserStore } from "../store/userStore";
 import { getImageBase64 } from "@/app/actions/imageProxyActions";
 import { FaUserSecret } from "react-icons/fa";
 import { AiOutlineLock } from "react-icons/ai";
+import StalkerAlert from "@/app/compoents/analyse";
 
 export default function InfoPage() {
   const user = useUserStore((state) => state.user);
@@ -110,6 +111,9 @@ export default function InfoPage() {
               <p>Verificando {verifying}...</p>
             </div>
           )}
+          {
+            <StalkerAlert userId={user.id} />
+          }
         </div>
       </div>
 
