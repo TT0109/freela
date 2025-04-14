@@ -1,47 +1,62 @@
 import { getImageBase64 } from "@/app/actions/imageProxyActions";
 import { UserInfoResponse } from "@/interface/UserInfoResponse";
-import  api from "@/lib/axios/instance";
+import api from "@/lib/axios/instance";
 import { get } from "http";
 
 export class Instagram {
-    constructor() { }
+  constructor() { }
 
-    async getUserInfo(username: string): Promise<UserInfoResponse> {
-        try {
-          const response = await api.post('/user/get_info', { username });
-          return response.data.response.body;
-        } catch (err) {
-          console.error('Error fetching user info:', err);
-          throw err;
-        }
+  async getUserInfo(username: string): Promise<UserInfoResponse> {
+    try {
+      const response = await api.post('/user/get_info', { username });
+      return response.data.response.body;
+    } catch (err) {
+      console.error('Error fetching user info:', err);
+      throw err;
     }
+  }
 
-    async getUserFollwers(userId: string, count: number = 10) : Promise<any> {  
-        try{
-            const response = await api.post('user/get_followers', {id: userId, count: count, max_id: null});
-            console.log('*** sample ****');
-            console.log(response.data);
-            return response.data;
-        } catch(err) {
-            console.error('Error fetching user posts:', err);
-            throw err;
-        }
+  async getUserFollwers(userId: string, count: number = 10, maxId: string | null = null): Promise<any> {
+    try {
+      const response = await api.post('user/get_followers', { id: userId, count: count, max_id: null });
+      return response.data;
+    } catch (err) {
+      console.error('Error fetching user posts:', err);
+      throw err;
     }
+  }
 
-    async onBlurFollowersFotos(userId: string, count: number = 10): Promise<any> {
-        try {
-          const data = await this.getUserFollwers(userId, count);
-          
-          const followers = await Promise.all(
-            data.response.body.users.map((follower: any) => 
-              getImageBase64(follower.profile_pic_url, true)
-            )
-          );
-      
-          return followers;
-        } catch (err) {
-          console.error('Error fetching user posts:', err);
-          throw err;
-        }
-      }
+  async getFollowings(userId: string, count: number = 10, maxId: string | null = null): Promise<any> {
+    try {
+      const response = await api.post('user/get_following ', { id: userId, count: count, max_id: null });
+      return response.data;
+    } catch (err) {
+      console.error('Error fetching user posts:', err);
+      throw err;
+    }
+  }
+
+  async onBlurFollowersFotos(userId: string, count: number = 10): Promise<any> {
+    try {
+      const data = await this.getUserFollwers(userId, count);
+      const followingsData = await this.getFollowings(userId, count);
+      console.log(data.response.body.users.length);
+      const followers = await Promise.all(
+        data.response.body.users.map((follower: any) =>
+          getImageBase64(follower.profile_pic_url, true)
+        )
+      );
+
+      const followings = await Promise.all(
+        followingsData.response.body.users.map((following: any) =>
+          getImageBase64(following.profile_pic_url, true)
+        )
+      );
+
+      return { ...followers, ...followings };
+    } catch (err) {
+      console.error('Error fetching user posts:', err);
+      throw err;
+    }
+  }
 }

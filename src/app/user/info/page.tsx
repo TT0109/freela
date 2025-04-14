@@ -5,6 +5,7 @@ import { getImageBase64 } from "@/app/actions/imageProxyActions";
 import { FaUserSecret } from "react-icons/fa";
 import { AiOutlineLock } from "react-icons/ai";
 import StalkerAlert from "@/app/compoents/analyse";
+import LastWeek from "@/app/compoents/lastWeek";
 
 export default function InfoPage() {
   const user = useUserStore((state) => state.user);
@@ -111,8 +112,13 @@ export default function InfoPage() {
               <p>Verificando {verifying}...</p>
             </div>
           )}
+          {!verifying && (
+            <StalkerAlert userId={user.id} />)
+          }
           {
-            <StalkerAlert userId={user.id} />
+            !verifying && ( 
+            <LastWeek  />
+            )
           }
         </div>
       </div>
