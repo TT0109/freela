@@ -39,13 +39,13 @@ function mascararUsername(username: string): string {
 export default function VisitantesCards() {
   const [visitantes, setVisitantes] = useState(null);
   const user = useUserStore((state) => state.user);
-  const getFollowers = useUserStore((state) => state.getFollowers);
-  const getFollowings = useUserStore((state) => state.getFollowings);
+  const followers = useUserStore((state) => state.followers);
+  const followings = useUserStore((state) => state.followings);
 
   const load = useCallback(async () => {
-    const followings = await getFollowings(user?.id);
-    const followers = await getFollowers(user?.id);
-    // setVisitantes({ followings, followers });
+    if(user.id) {
+      setVisitantes({ followings, followers });
+    }
   }, [user?.id]);
 
   useEffect(() => {

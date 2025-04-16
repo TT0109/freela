@@ -2,7 +2,8 @@
 import { useUserStore } from '@/app/user/store/userStore';
 import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
-
+import { getImageBase64 } from '@/app/actions/imageProxyActions';
+import { getRandomItems } from '@/app/actions/getRandowmItems';
 
 const fakeVisitantes = [
   {
@@ -33,29 +34,40 @@ function mascararUsername(username: string): string {
 export default function VisitantesCards() {
   const [visitantes, setVisitantes] = useState(null);
   const user = useUserStore((state) => state.user);
-  const getFollowers = useUserStore((state) => state.getFollowers);
-  const getFollowings = useUserStore((state) => state.getFollowings);
+
+  const followings = useUserStore((state) => state.followers);
+  const followers = useUserStore((state) => state.followings);
 
   const load = useCallback(async () => {
-    const followings = await getFollowings(user?.id);
-    const followers = await getFollowers(user?.id);
 
-    debugger; 
+    const allUsersMap = new Map();
+    [...followings.followers.users, ...followers.followers.users].forEach((u) => {
+      allUsersMap.set(u.pk, u);
+    });
 
-    // setVisitantes({
-    //   followings,
-    //   followers
-    // });
+    const allUsers = Array.from(allUsersMap.values());
+
+    const selectedUsers = await getRandomItems(allUsers, 3);
+
+    const visitantesConvertidos = await Promise.all(
+      selectedUsers.map(async (user: any) => ({
+        nome: user.full_name,
+        username: user.username,
+        avatar: await getImageBase64(user.profile_pic_url),
+      }))
+    );
+
+    setVisitantes(visitantesConvertidos as any);
 
   }, [user?.id]);
-  
+
   useEffect(() => {
     load();
   }, [load]);
 
   return (
     <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-lg mx-auto">
-      {fakeVisitantes.map((v, idx) => (
+      {visitantes && (visitantes as any).map((v, idx) => (
         <div key={idx} className="bg-white rounded-xl shadow p-3 flex flex-col items-center text-center">
           <Image
             src={v.avatar}

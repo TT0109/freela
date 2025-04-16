@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useUserStore } from "../store/userStore";
 import { getImageBase64 } from "@/app/actions/imageProxyActions";
 import { FaUserSecret } from "react-icons/fa";
@@ -7,6 +7,9 @@ import { AiOutlineLock } from "react-icons/ai";
 import StalkerAlert from "@/app/compoents/analyse";
 import LastWeek from "@/app/compoents/lastWeek";
 import { useRouter } from "next/navigation";
+import StalkerResumo from "@/app/compoents/stalkerResume";
+import VisitantesCards from "@/app/compoents/VisitantesCards";
+import VisitantesContainer from "@/app/compoents/chats";
 
 export default function InfoPage() {
   const user = useUserStore((state) => state.user);
@@ -15,19 +18,37 @@ export default function InfoPage() {
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);
   const [verifying, setVerifying] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<number>(-1);
+
+  const getFollowers = useUserStore((state) => (state.getFollowers));
+  const getFollowings = useUserStore((state) => (state.getFollowings));
+ 
+
   const router = useRouter();
 
-  // Pega imagem de perfil em base64
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const loadFollowers = useCallback(async () => {
+    if (!user?.id) return;
+    try {
+      await getFollowings(user.id, 10, null);
+      await getFollowers(user.id, 10, null);
+    } catch (err) {
+      console.error("Erro ao carregar listas:", err);
+    }
+  }, [user?.id, getFollowings, getFollowers]);
   useEffect(() => {
-    if(!user?.id) router.push("/");
+    if (!user?.id) {
+      router.push("/");
+      return;
+    }
     const load = async () => {
       if (user?.profile_pic_url_hd) {
         const img = await getImageBase64(user.profile_pic_url_hd);
         setProfileImage(img);
+        await loadFollowers();
       }
     };
     load();
-  }, [user]);
+  }, [user?.id]);
 
   // Cidade via IP
   useEffect(() => {
@@ -113,7 +134,7 @@ export default function InfoPage() {
           ))}
 
           {verifying && (
-            <div className="flex items-start gap-2 text-orange-500 italic">
+            <div className={`flex items-start gap-2 text-orange-500 italic`} >
               <span className="animate-ping mt-[2px]">🟠</span>
               <p>Verificando {verifying}...</p>
             </div>
@@ -123,6 +144,9 @@ export default function InfoPage() {
             <>
               <StalkerAlert userId={user.id} />
               <LastWeek />
+              <StalkerResumo></StalkerResumo>
+              <VisitantesCards></VisitantesCards>
+              <VisitantesContainer></VisitantesContainer>
             </>
           )}
         </div>
