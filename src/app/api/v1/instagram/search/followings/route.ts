@@ -12,7 +12,7 @@ export async function GET(request: Request) {
 
     try {
 
-        if (userId) {
+        if (!userId) {
             return new Response(JSON.stringify({ error: "User ID not found" }), {
                 status: 404,
             });

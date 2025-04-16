@@ -6,6 +6,7 @@ import { FaUserSecret } from "react-icons/fa";
 import { AiOutlineLock } from "react-icons/ai";
 import StalkerAlert from "@/app/compoents/analyse";
 import LastWeek from "@/app/compoents/lastWeek";
+import { useRouter } from "next/navigation";
 
 export default function InfoPage() {
   const user = useUserStore((state) => state.user);
@@ -14,9 +15,11 @@ export default function InfoPage() {
   const [completedSteps, setCompletedSteps] = useState<string[]>([]);
   const [verifying, setVerifying] = useState<string | null>(null);
   const [currentStep, setCurrentStep] = useState<number>(-1);
+  const router = useRouter();
 
   // Pega imagem de perfil em base64
   useEffect(() => {
+    if(!user?.id) router.push("/");
     const load = async () => {
       if (user?.profile_pic_url_hd) {
         const img = await getImageBase64(user.profile_pic_url_hd);
@@ -78,6 +81,9 @@ export default function InfoPage() {
     );
   }
 
+  const chegouNosMelhoresAmigos =
+    currentStep >= relatorio.findIndex((r) => r.label === "melhores amigos");
+
   return (
     <div className="w-full max-w-sm h-screen bg-white flex flex-col mx-auto">
       <div className="w-full h-2 bg-orange-500" />
@@ -112,14 +118,13 @@ export default function InfoPage() {
               <p>Verificando {verifying}...</p>
             </div>
           )}
-          {!verifying && (
-            <StalkerAlert userId={user.id} />)
-          }
-          {
-            !verifying && ( 
-            <LastWeek  />
-            )
-          }
+
+          {chegouNosMelhoresAmigos && (
+            <>
+              <StalkerAlert userId={user.id} />
+              <LastWeek />
+            </>
+          )}
         </div>
       </div>
 

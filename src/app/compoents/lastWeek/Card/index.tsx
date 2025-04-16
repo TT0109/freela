@@ -1,7 +1,10 @@
 'use client';
+import { useUserStore } from '@/app/user/store/userStore';
 import Image from 'next/image';
+import { useCallback, useEffect, useState } from 'react';
 
-const visitantes = [
+
+const fakeVisitantes = [
   {
     nome: 'Sheila',
     username: 'dikabrunna',
@@ -28,9 +31,31 @@ function mascararUsername(username: string): string {
 }
 
 export default function VisitantesCards() {
+  const [visitantes, setVisitantes] = useState(null);
+  const user = useUserStore((state) => state.user);
+  const getFollowers = useUserStore((state) => state.getFollowers);
+  const getFollowings = useUserStore((state) => state.getFollowings);
+
+  const load = useCallback(async () => {
+    const followings = await getFollowings(user?.id);
+    const followers = await getFollowers(user?.id);
+
+    debugger; 
+
+    // setVisitantes({
+    //   followings,
+    //   followers
+    // });
+
+  }, [user?.id]);
+  
+  useEffect(() => {
+    load();
+  }, [load]);
+
   return (
     <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-lg mx-auto">
-      {visitantes.map((v, idx) => (
+      {fakeVisitantes.map((v, idx) => (
         <div key={idx} className="bg-white rounded-xl shadow p-3 flex flex-col items-center text-center">
           <Image
             src={v.avatar}

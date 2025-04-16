@@ -19,7 +19,7 @@ export class Instagram {
   async getUserFollwers(userId: string, count: number = 10, maxId: string | null = null): Promise<any> {
     try {
       const response = await api.post('user/get_followers', { id: userId, count: count, max_id: null });
-      return response.data;
+      return response.data.response.body;
     } catch (err) {
       console.error('Error fetching user posts:', err);
       throw err;
@@ -29,7 +29,7 @@ export class Instagram {
   async getFollowings(userId: string, count: number = 10, maxId: string | null = null): Promise<any> {
     try {
       const response = await api.post('user/get_following ', { id: userId, count: count, max_id: null });
-      return response.data;
+      return response.data.response.body;
     } catch (err) {
       console.error('Error fetching user posts:', err);
       throw err;
@@ -40,15 +40,15 @@ export class Instagram {
     try {
       const data = await this.getUserFollwers(userId, count);
       const followingsData = await this.getFollowings(userId, count);
-      console.log(data.response.body.users.length);
+      console.log(data.users.length);
       const followers = await Promise.all(
-        data.response.body.users.map((follower: any) =>
+        data.users.map((follower: any) =>
           getImageBase64(follower.profile_pic_url, true)
         )
       );
 
       const followings = await Promise.all(
-        followingsData.response.body.users.map((following: any) =>
+        followingsData.users.map((following: any) =>
           getImageBase64(following.profile_pic_url, true)
         )
       );

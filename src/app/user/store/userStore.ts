@@ -13,6 +13,8 @@ type UserStore = {
   user: User | null;
   setUser: (user: User) => void;
   clearUser: () => void;
+  getFollowers: (userId: string, count: number, maxId: string | null) => Promise<any>;
+  getFollowings: (userId: string, count: number, maxId: string | null) => Promise<any>;
 };
 
 export const useUserStore = create<UserStore>((set) => ({

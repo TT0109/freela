@@ -13,7 +13,7 @@ export async function GET(request: Request) {
   try {
     // Etapa 1: Buscar o ID do usuário via username
 
-    if (userId) {
+    if (!userId) {
       return new Response(JSON.stringify({ error: "User ID not found" }), {
         status: 404,
       });
