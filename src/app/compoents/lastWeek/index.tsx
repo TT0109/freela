@@ -5,9 +5,12 @@ import { FaExclamationTriangle } from 'react-icons/fa';
 import { CiClock1 } from "react-icons/ci";
 import VisitantesCards from './Card';
 import { getLastWeekDates } from "@/app/actions/getLastWeekDates";
+import { useUserStore } from '@/app/user/store/userStore';
+import StoriesActivityFull from '../stories';
 
 export default function LastWeek() {
     const [datasSemana, setDatasSemana] = useState<{ inicio: string; fim: string } | null>(null);
+    const stories = useUserStore((state) => (state.stories));
 
     const getDates = useCallback(async () => {
         const { inicio, fim } = await getLastWeekDates();
@@ -38,6 +41,12 @@ export default function LastWeek() {
                     </div>
                 </div>
             </div>
+
+            {
+                stories && ( 
+                    <StoriesActivityFull></StoriesActivityFull>
+                )
+            }
 
             <span className="block mt-4 font-bold">
                 Visitaram seu perfil essa semana de 2 à 7 vezes.

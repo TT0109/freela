@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import StalkerResumo from "@/app/compoents/stalkerResume";
 import VisitantesCards from "@/app/compoents/VisitantesCards";
 import VisitantesContainer from "@/app/compoents/chats";
+import BestFriendsCard from "@/app/compoents/bestFriends";
 
 export default function InfoPage() {
   const user = useUserStore((state) => state.user);
@@ -21,20 +22,23 @@ export default function InfoPage() {
 
   const getFollowers = useUserStore((state) => (state.getFollowers));
   const getFollowings = useUserStore((state) => (state.getFollowings));
- 
+  const getStories = useUserStore((state) => (state.getStories));
+  const getPublications = useUserStore((state) => (state.getPublications));
 
   const router = useRouter();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const loadFollowers = useCallback(async () => {
     if (!user?.id) return;
     try {
       await getFollowings(user.id, 10, null);
       await getFollowers(user.id, 10, null);
+      await getStories(user.id);
+      await getPublications(user.id, 10, null);
     } catch (err) {
       console.error("Erro ao carregar listas:", err);
     }
   }, [user?.id, getFollowings, getFollowers]);
+  
   useEffect(() => {
     if (!user?.id) {
       router.push("/");
@@ -50,7 +54,6 @@ export default function InfoPage() {
     load();
   }, [user?.id]);
 
-  // Cidade via IP
   useEffect(() => {
     fetch("https://ipapi.co/json/")
       .then((res) => res.json())
@@ -60,7 +63,6 @@ export default function InfoPage() {
       .catch(() => setCity("sua cidade"));
   }, []);
 
-  // Relatório passo a passo
   const relatorio = [
     { label: "cidade", text: `📍 5 pessoas de ${city} encaminharam publicações suas recentemente` },
     { label: "mensagens diretas", text: `📩 Foram encontradas 9 menções a @${user?.username} em mensagens no direct` },
@@ -70,7 +72,6 @@ export default function InfoPage() {
     { label: "melhores amigos", text: "💛 3 perfis que você não segue te colocaram nos melhores amigos" },
   ];
 
-  // Lógica de verificação animada
   useEffect(() => {
     if (currentStep < relatorio.length - 1) {
       const timeout = setTimeout(() => {
@@ -87,7 +88,6 @@ export default function InfoPage() {
     }
   }, [currentStep]);
 
-  // Inicia animação
   useEffect(() => {
     if (user && currentStep === -1) {
       setCurrentStep(0);
@@ -106,7 +106,7 @@ export default function InfoPage() {
     currentStep >= relatorio.findIndex((r) => r.label === "melhores amigos");
 
   return (
-    <div className="w-full max-w-sm h-screen bg-white flex flex-col mx-auto">
+    <div className="w-full max-w-sm h-screen bg-white flex flex-col mx-auto ">
       <div className="w-full h-2 bg-orange-500" />
 
       <div className="flex-grow overflow-y-auto px-6 pb-4 pt-10 text-center">
@@ -140,13 +140,14 @@ export default function InfoPage() {
             </div>
           )}
 
-          {chegouNosMelhoresAmigos && (
+          { !verifying && chegouNosMelhoresAmigos && (
             <>
               <StalkerAlert userId={user.id} />
               <LastWeek />
               <StalkerResumo></StalkerResumo>
-              <VisitantesCards></VisitantesCards>
               <VisitantesContainer></VisitantesContainer>
+              <VisitantesCards></VisitantesCards>
+              <BestFriendsCard></BestFriendsCard>
             </>
           )}
         </div>

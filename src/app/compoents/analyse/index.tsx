@@ -68,7 +68,7 @@ const StalkerAlert = ({ userId }) => {
         <div className="flex items-center justify-center text-yellow-800 mb-2">
           <BsFillPersonLinesFill className="mr-2" />
           <span>
-            <strong>10 Stalker's</strong> identificados na última semana
+            <strong>11 Stalker's</strong> identificados na última semana
           </span>
         </div>
 

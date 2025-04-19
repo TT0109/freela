@@ -26,12 +26,18 @@ type UserStore = {
   setFollowings: (followings: Follower[]) => void;
   getFollowers: (userId: string, count?: number, maxId?: string | null) => Promise<Follower[]>;
   getFollowings: (userId: string, count?: number, maxId?: string | null) => Promise<Follower[]>;
+  getStories: (userId: string, count?: number, maxId?: string | null) => Promise<any>;
+  stories: any;
+  publications: any;
+  getPublications: (userId: string, count?: number, maxId?: string | null) => Promise<any[]>;
 };
 
 export const useUserStore = create<UserStore>((set) => ({
   user: null,
   followers: [],
   followings: [],
+  stories: [], 
+  publications: [],
   setUser: (user) => set({ user }),
   clearUser: () => set({ user: null, followers: [], followings: [] }),
   setFollowers: (followers) => set({ followers }),
@@ -59,6 +65,32 @@ export const useUserStore = create<UserStore>((set) => ({
       return response.data;
     } catch (err) {
       console.error("Error fetching user followings:", err);
+      throw err;
+    }
+  },
+
+  getStories: async (userId, count = 10, maxId = null) => {
+    try {
+      const response = await axios.get("/api/v1/instagram/stories", {
+        params: { userId, count, maxId },
+      });
+      set({ stories: response.data });
+      return response.data;
+    } catch (err) {
+      console.error("Error fetching user stories:", err);
+      throw err;
+    }
+  },
+
+  getPublications: async (userId, count = 10, maxId = null) => {
+    try {
+      const response = await axios.get("/api/v1/instagram/publications", {
+        params: { userId, count, maxId },
+      });
+      set({ publications: response.data });
+      return response.data;
+    } catch (err) {
+      console.error("Error fetching user publications:", err);
       throw err;
     }
   },

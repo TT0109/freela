@@ -2,6 +2,7 @@
 
 import { useUserStore } from '@/app/user/store/userStore';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { FaLock } from 'react-icons/fa';
 
@@ -41,6 +42,7 @@ export default function VisitantesCards() {
   const user = useUserStore((state) => state.user);
   const followers = useUserStore((state) => state.followers);
   const followings = useUserStore((state) => state.followings);
+  const router = useRouter();
 
   const load = useCallback(async () => {
     if(user.id) {
@@ -51,6 +53,10 @@ export default function VisitantesCards() {
   useEffect(() => {
     load();
   }, [load]);
+  
+  const redirectToPayments = () => {
+    router.push('payments');
+  };
 
   return (
     <div className="px-4 py-6 max-w-lg mx-auto text-center font-sans">
@@ -61,7 +67,7 @@ export default function VisitantesCards() {
         DESCUBRA <span className="underline">QUEM FALOU DE VOCÊ</span><br />NO RELATÓRIO COMPLETO
       </p>
 
-      <button className="bg-orange-500 hover:bg-orange-600 transition text-white w-full py-3 rounded-xl font-semibold text-base mb-5">
+      <button className="bg-orange-500 hover:bg-orange-600 transition text-white w-full py-3 rounded-xl font-semibold text-base mb-5 cursor-pointer" onClick={redirectToPayments}>
         🔓 Desbloquear prints
       </button>
 

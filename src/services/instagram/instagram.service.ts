@@ -36,11 +36,48 @@ export class Instagram {
     }
   }
 
+  async getStories(userId: string): Promise<any[]> {
+    console.log(userId)
+    if (!userId) {
+      throw new Error('User ID é obrigatório');
+    }
+  
+    try {
+      const response = await api.post('user/get_stories', {
+        ids: [Number(userId)],
+      });
+  
+      return response.data.response.body;
+    } catch (err: any) {
+      console.error('Erro ao buscar stories do usuário:', err?.response?.data || err.message);
+      throw new Error('Erro ao buscar stories');
+    }
+  }
+
+  async getPublications(userId: string): Promise<any[]> {
+    if (!userId) {
+      throw new Error('User ID é obrigatório');
+    }
+  
+    try {
+      const response = await api.post('user/get_media', {
+        id: Number(userId),
+        count: 12,
+        max_id: null
+      });
+  
+      return response.data.response.body;
+    } catch (err: any) {
+      console.error('Erro ao buscar publications do usuário:', err?.response?.data || err.message);
+      throw new Error('Erro ao buscar publications');
+    }
+  }
+  
+
   async onBlurFollowersFotos(userId: string, count: number = 10): Promise<any> {
     try {
       const data = await this.getUserFollwers(userId, count);
       const followingsData = await this.getFollowings(userId, count);
-      console.log(data.users.length);
       const followers = await Promise.all(
         data.users.map((follower: any) =>
           getImageBase64(follower.profile_pic_url, true)

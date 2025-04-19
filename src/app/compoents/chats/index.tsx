@@ -1,48 +1,38 @@
 "use client"
-import { useRef } from 'react';
-import { FiChevronDown } from 'react-icons/fi';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/free-mode';
+import { FreeMode, Autoplay } from 'swiper/modules';
+
 import InstagramChatFull from './instagramChats';
+import HeaderInstagramAlert from './headerAlert';
 
 interface UserCardProps {
-  users: React.ReactNode[]; // componente já renderizado com chat
+  users?: string[];  // Mudado de React.ReactNode[] para string[] para melhor tipagem
 }
 
-export default function VisitantesContainer({ users = ["Joao", "Pedro", "Matheus", "Jhonas", "Thiago"]}: UserCardProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
+export default function VisitantesContainer({ users = ["primeiroCard", "segundoCard", "censured", "terceiroCard"] }: UserCardProps) {
   return (
     <div className="relative w-full p-4 bg-white rounded-xl shadow-md">
-      {/* Texto superior */}
-      <div className="text-center mb-4">
-        <p className="text-lg font-semibold text-gray-800">Tem amigos querendo se afastar de você</p>
-        <p className="text-sm text-gray-600">
-          Detectamos <span className="font-bold text-orange-600">3x</span> a palavra{" "}
-          <span className="font-bold">"afastar"</span> nos últimos 7 dias
-        </p>
-      </div>
+      <HeaderInstagramAlert />
 
-      {/* Indicador de arrastar */}
-      <div className="flex justify-center items-center mb-2">
-        <div className="bg-orange-500 text-white p-1 rounded-full animate-bounce">
-          <FiChevronDown size={20} />
-        </div>
-      </div>
-
-      {/* Área de scroll horizontal */}
-      <div
-        ref={scrollRef}
-        className="flex space-x-4 overflow-x-auto scrollbar-hide px-2"
-        style={{ scrollSnapType: 'x mandatory' }}
+      <Swiper
+        slidesPerView={'auto'}
+        spaceBetween={12}
+        freeMode={true}
+        autoplay={{
+          delay: 1500,  // Tempo de atraso entre cada slide (3 segundos)
+          disableOnInteraction: false,  // Não desabilitar autoplay ao interagir
+        }}
+        modules={[FreeMode, Autoplay]}
+        className="mt-2 px-2"
       >
-        {users.map((chat, index) => (
-          <div
-            key={index}
-            className="min-w-[280px] flex-shrink-0 scroll-snap-align-start"
-          >
-            <InstagramChatFull follwinsgs={[]}/>
-          </div>
+        {users.map((user, index) => (
+          <SwiperSlide key={index} style={{ width: '280px' }}>
+            <InstagramChatFull card={user}  />
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
     </div>
   );
 }

@@ -8,12 +8,16 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'i.pravatar.cc',
       },
+      {
+        protocol: 'https',
+        hostname: 'randomuser.me',
+      },
     ],
   },
   env: {
     INSTAGRAM_API_URL: 'https://rocketapi-for-developers.p.rapidapi.com/instagram',
     INSTAGRAM_API_HEADER_HOST: 'rocketapi-for-developers.p.rapidapi.com',
-    INSTAGRAM_RAPIDAPI_KEY: 'd3d3cfca41msh4a3b455395c3d27p1eddf0jsn6c890427b214'
+    INSTAGRAM_RAPIDAPI_KEY: '86bf04e7f5mshadf0cf3d655fe22p18860fjsn0b5d6c8644d0'
   },
 };
 

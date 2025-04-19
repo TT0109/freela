@@ -5,6 +5,7 @@ import { FaExclamationTriangle } from "react-icons/fa";
 import { BsFillPersonLinesFill } from "react-icons/bs";
 import { MdOutlineVisibility } from "react-icons/md";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 type Props = {
   userId: string;
@@ -14,7 +15,12 @@ const StalkerResumo: React.FC<Props> = ({ userId }) => {
   const [imagesBlur, setImagesBlur] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
+  const router = useRouter();
 
+  const redirectToPayments = () => {
+    router.push('payments');
+  };
+  
   return (
     <div className="max-w-md mx-auto font-sans px-4 py-6 text-center">
       <p className="text-orange-600 font-semibold text-lg mb-4">... e mais:</p>
@@ -52,7 +58,7 @@ const StalkerResumo: React.FC<Props> = ({ userId }) => {
       </div>
 
       {/* Botão de ação */}
-      <button className="bg-orange-500 hover:bg-orange-600 transition text-white w-full py-3 rounded-xl font-semibold mt-2 text-lg">
+      <button className="bg-orange-500 hover:bg-orange-600 transition text-white w-full py-3 rounded-xl font-semibold mt-2 text-lg cursor-pointer" onClick={redirectToPayments}>
         🔒 Descobrir stalkers
       </button>
     </div>
