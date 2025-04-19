@@ -59,6 +59,8 @@ const StalkerAlert = ({ userId }) => {
               src={imagesBlur[0]}
               alt="perfil-cidade"
               className="w-10 h-10 rounded-full border border-green-300"
+              width={100}
+              height={100}
             />
           </div>
         )}
@@ -79,6 +81,8 @@ const StalkerAlert = ({ userId }) => {
               src={imagesBlur[1]}
               alt="stalker1"
               className="w-10 h-10 rounded-full border border-yellow-300"
+              width={100}
+              height={100}
             />
           )}
           {imagesBlur[2] && (
@@ -86,6 +90,8 @@ const StalkerAlert = ({ userId }) => {
               src={imagesBlur[2]}
               alt="stalker2"
               className="w-10 h-10 rounded-full border border-yellow-300"
+              width={100}
+              height={100}
             />
           )}
         </div>
@@ -116,6 +122,8 @@ const StalkerAlert = ({ userId }) => {
               src={imagesBlur[3]}
               alt="stalker-final"
               className="w-12 h-12 rounded-full border border-red-300"
+              width={100}
+              height={100}
             />
           </div>
         )}

@@ -86,7 +86,7 @@ export function StoriesActivity() {
                 <div className="absolute top-3 left-3 right-3 flex items-center z-10">
                   {!story.isPrimary && (
                     <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center mr-2">
-                      <div className="w-full h-full rounded-full bg-white"> <Image className='rounded-full w-full h-full' src={story.procfileImage} alt={story.username} /></div>
+                      <div className="w-full h-full rounded-full bg-white"> <Image className='rounded-full w-full h-full' src={story.procfileImage} alt={story.username} width={100} height={100}/></div>
                     </div>
                   )}
                   <span className="text-white text-sm font-medium truncate">
@@ -123,6 +123,8 @@ export function StoriesActivity() {
                                 src={`https://randomuser.me/api/portraits/${i % 2 === 0 ? 'men' : 'women'}/${i * 7}.jpg`}
                                 alt="Pessoa"
                                 className="w-full h-full object-cover filter blur-[2px]"
+                                width={100}
+                                height={100}
                               />
                             </div>
                           ))}

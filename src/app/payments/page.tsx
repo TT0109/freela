@@ -58,8 +58,10 @@ const PaymentPage: React.FC = () => {
                     {profileImage ? (
                         <Image
                             src={profileImage}
-                            alt={user.username}
+                            alt={user?.username ? user?.username : ''}
                             className="w-24 h-24 rounded-full mx-auto mb-4 shadow-lg border-4 border-white object-cover"
+                            width={100}
+                            height={100}
                         />
                     ) : (
                         <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 animate-pulse border-4 border-white" />
@@ -171,6 +173,8 @@ const PaymentPage: React.FC = () => {
                                 src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150"
                                 alt="User"
                                 className="w-full h-full object-cover"
+                                width={100}
+                                height={100}
                             />
                         </div>
                         <div>

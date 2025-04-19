@@ -95,6 +95,8 @@ export default function SearchProfile() {
                             src={profileImage}
                             alt={user.username}
                             className="w-24 h-24 rounded-full object-cover shadow-lg -mt-14 border-4 border-white"
+                            width={100}
+                            height={100}
                         />
                     ) : (
                         <div className="w-24 h-24 bg-gray-200 rounded-full animate-pulse -mt-14 border-4 border-white" />
@@ -193,6 +195,8 @@ export default function SearchProfile() {
                                 src={f.avatar}
                                 alt={f.name}
                                 className="w-10 h-10 rounded-full object-cover"
+                                width={100}
+                                height={100}
                             />
                             <div>
                                 <div className="text-sm font-semibold">

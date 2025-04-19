@@ -39,6 +39,15 @@ export default function InfoPage() {
       console.error("Erro ao carregar listas:", err);
     }
   }, [getFollowers, getFollowings, getPublications, getStories, user?.id]);
+
+  const relatorio = [
+    { label: "cidade", text: `📍 5 pessoas de ${city} encaminharam publicações suas recentemente` },
+    { label: "mensagens diretas", text: `📩 Foram encontradas 9 menções a @${user?.username} em mensagens no direct` },
+    { label: "prints", text: "🕵️‍♀️ Prints de conversas sobre você foram detectados" },
+    { label: "stalkers semana", text: "🔍 11 stalkers novos na última semana" },
+    { label: "stalker fixo", text: "❤️ Um stalker acessou seu perfil por 11 dias seguidos" },
+    { label: "melhores amigos", text: "💛 3 perfis que você não segue te colocaram nos melhores amigos" },
+  ];
   
   useEffect(() => {
     if (!user?.id) {
@@ -64,16 +73,6 @@ export default function InfoPage() {
       .catch(() => setCity("sua cidade"));
   }, []);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const relatorio = [
-    { label: "cidade", text: `📍 5 pessoas de ${city} encaminharam publicações suas recentemente` },
-    { label: "mensagens diretas", text: `📩 Foram encontradas 9 menções a @${user?.username} em mensagens no direct` },
-    { label: "prints", text: "🕵️‍♀️ Prints de conversas sobre você foram detectados" },
-    { label: "stalkers semana", text: "🔍 11 stalkers novos na última semana" },
-    { label: "stalker fixo", text: "❤️ Um stalker acessou seu perfil por 11 dias seguidos" },
-    { label: "melhores amigos", text: "💛 3 perfis que você não segue te colocaram nos melhores amigos" },
-  ];
-
   useEffect(() => {
     if (currentStep < relatorio.length - 1) {
       const timeout = setTimeout(() => {
@@ -88,7 +87,8 @@ export default function InfoPage() {
       }, 1000);
       return () => clearTimeout(timeout);
     }
-  }, [currentStep, relatorio]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStep]);
 
   useEffect(() => {
     if (user && currentStep === -1) {
@@ -117,6 +117,8 @@ export default function InfoPage() {
             src={profileImage}
             alt={user.username}
             className="w-24 h-24 rounded-full mx-auto mb-4 shadow-lg border-4 border-white object-cover"
+            width={100}
+            height={100}
           />
         ) : (
           <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 animate-pulse border-4 border-white" />

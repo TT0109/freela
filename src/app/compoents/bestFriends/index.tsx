@@ -49,6 +49,8 @@ export default function BestFriendsCard() {
                 src={`https://randomuser.me/api/portraits/${i % 2 === 0 ? 'men' : 'women'}/${i * 8}.jpg`}
                 alt="Avatar"
                 className="w-full h-full object-cover filter blur-sm"
+                width={100}
+                height={100}
               />
             </div>
           ))}
