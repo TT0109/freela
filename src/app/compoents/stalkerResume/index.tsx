@@ -11,7 +11,7 @@ type Props = {
   userId: string;
 };
 
-const StalkerResumo: React.FC<Props> = ({ userId }) => {
+const StalkerResumo: React.FC = () => {
   const [imagesBlur, setImagesBlur] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 

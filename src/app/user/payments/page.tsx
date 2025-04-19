@@ -64,7 +64,7 @@ const PaymentPage: React.FC = () => {
                     {profileImage ? (
                         <Image
                             src={profileImage}
-                            alt={user?.username}
+                            alt={user?.username as string}
                             className="w-24 h-24 rounded-full mx-auto mb-4 shadow-lg border-4 border-white object-cover"
                             width={100}
                             height={100}

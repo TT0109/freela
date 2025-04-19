@@ -9,7 +9,7 @@ import Image from 'next/image';
 const PaymentPage: React.FC = () => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
     const user = useUserStore(state => state.user);
-    const [profileImage, setProfileImage] = useState(null);
+    const [profileImage, setProfileImage] = useState<string>('');
     const router = useRouter();
     
     useEffect(() => {
@@ -20,7 +20,7 @@ const PaymentPage: React.FC = () => {
         const load = async () => {
             if (user?.profile_pic_url_hd) {
                 const img = await getImageBase64(user.profile_pic_url_hd);
-                setProfileImage(img);
+                if(typeof img === 'string') setProfileImage(img);
             }
         };
         load();

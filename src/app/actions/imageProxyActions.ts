@@ -18,9 +18,9 @@ export async function getImageBase64(imageUrl: string, onBlurFollowersFotos = fa
     const contentType = response.headers["content-type"] || "image/jpeg";
 
     // Garante que é um Node.js Buffer
-    const imageBuffer = Buffer.from(response.data as ArrayBuffer);
+    const imageBuffer = Buffer.from(response.data as ArrayBuffer);  // Garantir que seja um ArrayBuffer
 
-    let finalBuffer = imageBuffer;
+    let finalBuffer = imageBuffer as any;
 
     if (onBlurFollowersFotos) {
       finalBuffer = await sharp(imageBuffer).blur(10).toBuffer();
@@ -30,6 +30,6 @@ export async function getImageBase64(imageUrl: string, onBlurFollowersFotos = fa
     return `data:${contentType};base64,${base64}`;
   } catch (error) {
     console.error("Erro ao converter imagem para base64:", error);
-    return null;
+    return '';
   }
 }

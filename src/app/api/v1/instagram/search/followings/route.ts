@@ -18,7 +18,7 @@ export async function GET(request: Request) {
             });
         }
 
-        const followers = await instagramService.getFollowings(userId!, count, maxId);
+        const followers = await instagramService.getFollowings(userId!, Number(count), maxId);
 
         return new Response(
             JSON.stringify({

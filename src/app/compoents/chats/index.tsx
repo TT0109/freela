@@ -8,10 +8,10 @@ import InstagramChatFull from './instagramChats';
 import HeaderInstagramAlert from './headerAlert';
 
 interface UserCardProps {
-  users?: string[];  // Mudado de React.ReactNode[] para string[] para melhor tipagem
+  users?: any;  // Mudado de React.ReactNode[] para string[] para melhor tipagem
 }
 
-export default function VisitantesContainer({ users = ["primeiroCard", "segundoCard", "censured", "terceiroCard"] }: UserCardProps) {
+export default function VisitantesContainer({ users = ["primeiroCard", "segundoCard", "censured", "terceiroCard"] }: any) {
   return (
     <div className="relative w-full p-4 bg-white rounded-xl shadow-md">
       <HeaderInstagramAlert />

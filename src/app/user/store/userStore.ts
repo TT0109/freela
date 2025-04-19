@@ -18,8 +18,8 @@ type Follower = {
 
 type UserStore = {
   user: User | null;
-  followers: Follower[];
-  followings: Follower[];
+  followers: any;
+  followings: any;
   setUser: (user: User) => void;
   clearUser: () => void;
   setFollowers: (followers: Follower[]) => void;

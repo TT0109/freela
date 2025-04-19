@@ -15,16 +15,15 @@ export default function SearchProfile() {
     const [username, setUsername] = useState("");
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(false);
-    const [profileImage, setProfileImage] = useState(null);
+    const [profileImage, setProfileImage] = useState<string>('');
     const router = useRouter();
     const { setUser: setUserStore } = useUserStore(); // ✅ renomeando o setter do Zustand
-
 
     useEffect(() => {
         const loadImage = async () => {
             if (user?.profile_pic_url_hd) {
                 const base64 = await getImageBase64(user.profile_pic_url_hd);
-                setProfileImage(base64);
+                if(typeof base64 === 'string') setProfileImage(base64);
             }
         };
         loadImage();
@@ -118,7 +117,7 @@ export default function SearchProfile() {
                     <button
                         onClick={() => {
                             setUser(null);
-                            setProfileImage(null);
+                            setProfileImage('');
                         }}
                         className="mt-2 text-sm text-gray-600 flex items-center gap-1"
                     >

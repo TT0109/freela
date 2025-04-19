@@ -23,7 +23,7 @@ type Message = {
 }
 
 type Props = {
-  card: 'primeiroCard' | 'segundoCard' | 'terceiroCard' | 'censured'
+  card: any
 }
 
 // Move outside component to prevent recreation on each render
@@ -60,7 +60,7 @@ const mensagensOriginais: Record<string, Message[]> = {
 }
 
 // Extracted component for message rendering to reduce re-renders
-const MessageItem = React.memo(({ msg, highlightTextWithBlur }: { msg: Message, highlightTextWithBlur: (text: string) => (JSX.Element | string)[] }) => {
+const MessageItem = React.memo(({ msg, highlightTextWithBlur }: { msg: Message, highlightTextWithBlur: (text: string) => (React.JSX.Element | string)[] }) => {
   return (
     <div
       className={`flex items-start gap-2 mb-3 ${msg.isMe ? 'justify-end' : 'justify-start'}`}
@@ -79,7 +79,7 @@ const MessageItem = React.memo(({ msg, highlightTextWithBlur }: { msg: Message, 
         {msg.isSharedPublic && (
           <div className="flex flex-col w-full rounded-xl overflow-hidden bg-[#292929] border border-[#444]">
             <div className="flex items-center gap-2 px-3 py-2">
-              <Image src={msg.publicAvatarUrl} alt="avatar" className="w-6 h-6 rounded-full" width={100} height={100}/>
+              <Image src={msg.publicAvatarUrl as string} alt="avatar" className="w-6 h-6 rounded-full" width={100} height={100}/>
               <span className="text-white text-sm font-medium">@{msg.username}</span>
             </div>
             {msg.image && (
@@ -239,8 +239,8 @@ export default function InstagramChatFull({ card }: Props) {
         const updates: Record<string, Message[]> = {}
         
         // Process stories if available
-        if (userStories?.stories?.reels?.[userId]?.items?.length > 0) {
-          const firstStory = userStories.stories.reels[userId].items[0]
+        if (userStories?.stories?.reels?.[userId as string]?.items?.length > 0) {
+          const firstStory = userStories.stories.reels[userId as string].items[0]
           const storyImage = await getCachedImage(firstStory?.image_versions2?.candidates?.[0]?.url)
           const profilePic = await getCachedImage((user as any)?.profile_pic_url_hd)
           
@@ -297,7 +297,7 @@ export default function InstagramChatFull({ card }: Props) {
   }, [user, userId, userStories, publicationsUser, initialMessages, getCachedImage, mediaLoaded])
 
   // Highlight blacklisted words with blur effect
-  const highlightTextWithBlur = useCallback((text: string): (JSX.Element | string)[] => {
+  const highlightTextWithBlur = useCallback((text: string): (React.JSX.Element | string)[] => {
     if (!text) return []
     
     const words = text.split(/\b/)
