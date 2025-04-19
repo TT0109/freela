@@ -126,12 +126,13 @@ export default function InfoPage() {
         <hr className="my-4" />
 
         <div className="text-left text-sm space-y-3">
-          {completedSteps.map((text, i) => (
-            <div key={i} className="flex items-start gap-2 text-gray-800">
-              <span>✅</span>
-              <p>{text}</p>
-            </div>
-          ))}
+          <div className={chegouNosMelhoresAmigos ? 'hidden' : ''}>
+            {completedSteps.map((text, i) => (
+              <div key={i} className="flex items-start gap-2 text-gray-800">
+                <span>✅</span>
+                <p>{text}</p>
+              </div>
+            ))}
 
           {verifying && (
             <div className={`flex items-start gap-2 text-orange-500 italic`} >
@@ -139,6 +140,8 @@ export default function InfoPage() {
               <p>Verificando {verifying}...</p>
             </div>
           )}
+
+          </div>
 
           { !verifying && chegouNosMelhoresAmigos && (
             <>

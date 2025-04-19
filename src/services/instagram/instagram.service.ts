@@ -62,7 +62,7 @@ export class Instagram {
     try {
       const response = await api.post('user/get_media', {
         id: Number(userId),
-        count: 12,
+        count: 4,
         max_id: null
       });
   
