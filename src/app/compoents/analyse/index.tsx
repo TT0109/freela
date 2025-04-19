@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { FaMapMarkerAlt, FaExclamationTriangle } from 'react-icons/fa';
 import { BsFillPersonLinesFill } from 'react-icons/bs';
 import axios from 'axios';
+import Image from 'next/image';
 
 const getCidadeFromIP = async () => {
   try {
@@ -54,7 +55,7 @@ const StalkerAlert = ({ userId }) => {
 
         {imagesBlur[0] && (
           <div className="mt-2 flex justify-center">
-            <img
+            <Image
               src={imagesBlur[0]}
               alt="perfil-cidade"
               className="w-10 h-10 rounded-full border border-green-300"
@@ -68,20 +69,20 @@ const StalkerAlert = ({ userId }) => {
         <div className="flex items-center justify-center text-yellow-800 mb-2">
           <BsFillPersonLinesFill className="mr-2" />
           <span>
-            <strong>11 Stalker's</strong> identificados na última semana
+            <strong>11 Stalker&apos;s</strong> identificados na última semana
           </span>
         </div>
 
         <div className="mt-2 flex justify-center gap-2">
           {imagesBlur[1] && (
-            <img
+            <Image
               src={imagesBlur[1]}
               alt="stalker1"
               className="w-10 h-10 rounded-full border border-yellow-300"
             />
           )}
           {imagesBlur[2] && (
-            <img
+            <Image
               src={imagesBlur[2]}
               alt="stalker2"
               className="w-10 h-10 rounded-full border border-yellow-300"
@@ -111,7 +112,7 @@ const StalkerAlert = ({ userId }) => {
 
         {imagesBlur[3] && (
           <div className="mt-4 flex justify-center">
-            <img
+            <Image
               src={imagesBlur[3]}
               alt="stalker-final"
               className="w-12 h-12 rounded-full border border-red-300"

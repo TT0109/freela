@@ -11,6 +11,7 @@ import StalkerResumo from "@/app/compoents/stalkerResume";
 import VisitantesCards from "@/app/compoents/VisitantesCards";
 import VisitantesContainer from "@/app/compoents/chats";
 import BestFriendsCard from "@/app/compoents/bestFriends";
+import Image from 'next/image';
 
 export default function InfoPage() {
   const user = useUserStore((state) => state.user);
@@ -37,7 +38,7 @@ export default function InfoPage() {
     } catch (err) {
       console.error("Erro ao carregar listas:", err);
     }
-  }, [user?.id, getFollowings, getFollowers]);
+  }, [getFollowers, getFollowings, getPublications, getStories, user?.id]);
   
   useEffect(() => {
     if (!user?.id) {
@@ -52,7 +53,7 @@ export default function InfoPage() {
       }
     };
     load();
-  }, [user?.id]);
+  }, [loadFollowers, router, user?.id, user?.profile_pic_url_hd]);
 
   useEffect(() => {
     fetch("https://ipapi.co/json/")
@@ -63,6 +64,7 @@ export default function InfoPage() {
       .catch(() => setCity("sua cidade"));
   }, []);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const relatorio = [
     { label: "cidade", text: `📍 5 pessoas de ${city} encaminharam publicações suas recentemente` },
     { label: "mensagens diretas", text: `📩 Foram encontradas 9 menções a @${user?.username} em mensagens no direct` },
@@ -86,13 +88,13 @@ export default function InfoPage() {
       }, 1000);
       return () => clearTimeout(timeout);
     }
-  }, [currentStep]);
+  }, [currentStep, relatorio]);
 
   useEffect(() => {
     if (user && currentStep === -1) {
       setCurrentStep(0);
     }
-  }, [user]);
+  }, [currentStep, user]);
 
   if (!user) {
     return (
@@ -111,7 +113,7 @@ export default function InfoPage() {
 
       <div className="flex-grow overflow-y-auto px-6 pb-4 pt-10 text-center">
         {profileImage ? (
-          <img
+          <Image
             src={profileImage}
             alt={user.username}
             className="w-24 h-24 rounded-full mx-auto mb-4 shadow-lg border-4 border-white object-cover"

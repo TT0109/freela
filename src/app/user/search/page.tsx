@@ -8,7 +8,7 @@ import axios from "axios";
 import { getImageBase64 } from "@/app/actions/imageProxyActions";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "../store/userStore";
-
+import Image from 'next/image';
 
 export default function SearchProfile() {
     const progress = 50;
@@ -91,7 +91,7 @@ export default function SearchProfile() {
                 <div className="w-full h-2 bg-orange-500" />
                 <div className="flex-grow flex flex-col items-center justify-center text-center px-6">
                     {profileImage ? (
-                        <img
+                        <Image
                             src={profileImage}
                             alt={user.username}
                             className="w-24 h-24 rounded-full object-cover shadow-lg -mt-14 border-4 border-white"
@@ -189,7 +189,7 @@ export default function SearchProfile() {
                             key={i}
                             className="bg-white border rounded-xl p-4 shadow-sm flex gap-3"
                         >
-                            <img
+                            <Image
                                 src={f.avatar}
                                 alt={f.name}
                                 className="w-10 h-10 rounded-full object-cover"

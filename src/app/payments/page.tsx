@@ -4,6 +4,7 @@ import { Eye, MessageCircle, Lock, RefreshCw, CreditCard, Users, Check, AlertCir
 import { useUserStore } from '../user/store/userStore';
 import { getImageBase64 } from '../actions/imageProxyActions';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const PaymentPage: React.FC = () => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
@@ -23,7 +24,7 @@ const PaymentPage: React.FC = () => {
             }
         };
         load();
-    }, []);
+    }, [router, user?.id, user?.profile_pic_url_hd]);
 
     useEffect(() => {
         if (timeLeft <= 0) {
@@ -55,7 +56,7 @@ const PaymentPage: React.FC = () => {
                 {/* Header Section */}
                 <div className="flex-grow overflow-y-auto px-6 pb-4 pt-10 text-center">
                     {profileImage ? (
-                        <img
+                        <Image
                             src={profileImage}
                             alt={user.username}
                             className="w-24 h-24 rounded-full mx-auto mb-4 shadow-lg border-4 border-white object-cover"
@@ -84,7 +85,7 @@ const PaymentPage: React.FC = () => {
                                 <Users className="w-5 h-5" />
                             </div>
                         </div>
-                        <h3 className="text-center font-bold text-gray-800">Rastreio de Stalker's</h3>
+                        <h3 className="text-center font-bold text-gray-800">Rastreio de Stalker&apos;s</h3>
                         <p className="text-center text-sm text-gray-600">Saiba quem está entrando no seu perfil, mesmo que não te siga</p>
                     </div>
 
@@ -166,7 +167,7 @@ const PaymentPage: React.FC = () => {
                 <div className="px-4 py-2">
                     <div className="border rounded-lg p-3 flex items-start">
                         <div className="w-12 h-12 rounded-full overflow-hidden mr-3 flex-shrink-0">
-                            <img
+                            <Image
                                 src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150"
                                 alt="User"
                                 className="w-full h-full object-cover"

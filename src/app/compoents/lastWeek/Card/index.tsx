@@ -58,7 +58,7 @@ export default function VisitantesCards() {
     );
 
     setVisitantes(visitantesConvertidos as any);
-
+    //eslint-disable-next-line
   }, [user?.id]);
 
   useEffect(() => {

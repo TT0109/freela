@@ -18,6 +18,7 @@ export async function GET(request: Request) {
       status: 200,
     });
   } catch (error: any) {
+    console.error("Instagram API Error:", error);
     return new Response(
       JSON.stringify({ error: "Failed to fetch user info" }),
       {

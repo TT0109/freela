@@ -52,7 +52,7 @@ const StalkerResumo: React.FC<Props> = ({ userId }) => {
         <div className="flex items-center justify-center gap-2 text-orange-700 font-medium">
           <FaExclamationTriangle className="text-xl" />
           <span>
-            Descubra seus <strong>Stalker's</strong> no relatório completo
+            Descubra seus <strong>Stalker&apos;s</strong> no relatório completo
           </span>
         </div>
       </div>

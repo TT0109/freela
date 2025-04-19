@@ -66,7 +66,7 @@ const MessageItem = React.memo(({ msg, highlightTextWithBlur }: { msg: Message, 
       className={`flex items-start gap-2 mb-3 ${msg.isMe ? 'justify-end' : 'justify-start'}`}
     >
       {!msg.isMe && msg.avatarUrl && (
-        <img src={msg.avatarUrl} className="w-7 h-7 rounded-full blur-[2px]" alt="avatar" />
+        <Image src={msg.avatarUrl} className="w-7 h-7 rounded-full blur-[2px]" alt="avatar" />
       )}
       <div
         className={`max-w-[65%] text-sm whitespace-pre-wrap rounded-2xl
@@ -79,7 +79,7 @@ const MessageItem = React.memo(({ msg, highlightTextWithBlur }: { msg: Message, 
         {msg.isSharedPublic && (
           <div className="flex flex-col w-full rounded-xl overflow-hidden bg-[#292929] border border-[#444]">
             <div className="flex items-center gap-2 px-3 py-2">
-              <img src={msg.publicAvatarUrl} alt="avatar" className="w-6 h-6 rounded-full" />
+              <Image src={msg.publicAvatarUrl} alt="avatar" className="w-6 h-6 rounded-full" />
               <span className="text-white text-sm font-medium">@{msg.username}</span>
             </div>
             {msg.image && (

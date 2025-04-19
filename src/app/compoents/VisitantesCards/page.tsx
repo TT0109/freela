@@ -37,16 +37,16 @@ function mascararUsername(username: string): string {
 }
 
 export default function VisitantesCards() {
-  const [visitantes, setVisitantes] = useState(null);
-  const user = useUserStore((state) => state.user);
+  const user = useUserStore((state) => state?.user);
   const getFollowers = useUserStore((state) => state.getFollowers);
   const getFollowings = useUserStore((state) => state.getFollowings);
 
   const load = useCallback(async () => {
-    const followings = await getFollowings(user?.id);
-    const followers = await getFollowers(user?.id);
-    // setVisitantes({ followings, followers });
-  }, [user?.id]);
+    if(user) {
+      await getFollowings(user?.id);
+      await getFollowers(user?.id);
+    }
+  }, [getFollowers, getFollowings, user]);
 
   useEffect(() => {
     load();
@@ -66,7 +66,7 @@ export default function VisitantesCards() {
       </button>
 
       <h3 className="text-sm text-gray-800 font-semibold mb-4">
-        Principais <span className="text-orange-600">STALKER'S</span><br />detectados essa semana
+        Principais <span className="text-orange-600">STALKER&apos;S</span><br />detectados essa semana
       </h3>
 
       <div className="grid grid-cols-2 gap-4">

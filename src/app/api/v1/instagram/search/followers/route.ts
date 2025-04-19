@@ -7,8 +7,6 @@ const instagramService = new Instagram();
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get("userId");
-  const count = searchParams.get("count") ?? 10;
-  const maxId = searchParams.get("maxId") ?? null;
 
   try {
     // Etapa 1: Buscar o ID do usuário via username

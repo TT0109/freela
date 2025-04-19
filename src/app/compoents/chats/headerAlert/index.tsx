@@ -18,7 +18,7 @@ const HeaderInstagramAlert = () => {
       </p>
       <p className="text-sm text-gray-600">
         Detectamos <span className="font-bold text-orange-600">3x</span> a palavra{" "}
-        <span className="font-bold">"afastar"</span> nos últimos 7 dias
+        <span className="font-bold">&quot;afastar&quot;</span> nos últimos 7 dias
       </p>
 
       {/* Indicador para baixo */}

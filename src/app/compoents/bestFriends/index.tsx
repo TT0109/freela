@@ -9,6 +9,8 @@ import BlurredStoryCard from './BlurredStoryCard'
 import { FaStar } from 'react-icons/fa'
 import { useRouter } from 'next/navigation'
 
+import Image from 'next/image';
+
 const stories = [
   { mediaUrl: "/story-01.jpg", type: "image" },
   { mediaUrl: "/story-02.jpg", type: "image" },
@@ -43,7 +45,7 @@ export default function BestFriendsCard() {
         <div className="flex items-center justify-center mt-2 space-x-2">
           {[1, 2, 3].map((i) => (
             <div key={i} className="w-8 h-8 rounded-full overflow-hidden">
-              <img
+              <Image
                 src={`https://randomuser.me/api/portraits/${i % 2 === 0 ? 'men' : 'women'}/${i * 8}.jpg`}
                 alt="Avatar"
                 className="w-full h-full object-cover filter blur-sm"

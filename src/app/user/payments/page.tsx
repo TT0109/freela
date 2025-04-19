@@ -14,7 +14,7 @@ import {
 import { useUserStore } from '../store/userStore';
 import { getImageBase64 } from '@/app/actions/imageProxyActions';
 import { Redirect } from 'next';
-
+import Image from 'next/image';
 const PaymentPage: React.FC = () => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutos
     const user = useUserStore(state => state.user);
@@ -30,7 +30,7 @@ const PaymentPage: React.FC = () => {
             }
         };
         load();
-    }, [user?.id]);
+    }, [user?.id, user?.profile_pic_url_hd]);
 
     useEffect(() => {
         if (timeLeft <= 0) return;
@@ -62,7 +62,7 @@ const PaymentPage: React.FC = () => {
                 {/* Foto do perfil */}
                 <div className="flex-grow h-full px-6 pb-4 pt-10 text-center">
                     {profileImage ? (
-                        <img
+                        <Image
                             src={profileImage}
                             alt={user?.username}
                             className="w-24 h-24 rounded-full mx-auto mb-4 shadow-lg border-4 border-white object-cover"
@@ -128,7 +128,7 @@ const PaymentPage: React.FC = () => {
                 <div className="px-4 py-2">
                     <div className="border rounded-lg p-3 flex items-start">
                         <div className="w-12 h-12 rounded-full overflow-hidden mr-3 flex-shrink-0">
-                            <img
+                            <Image
                                 src="https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150"
                                 alt="User"
                                 className="w-full h-full object-cover"
