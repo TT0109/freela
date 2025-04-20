@@ -29,7 +29,8 @@ export default function Busca() {
         setError('Usuário não encontrado.')
         return
       }
-      if(email?.id) {
+
+      if (email?.id) {
         await axios.post('/api/v1/busca', {
           email: email.id,
           username: user.username,
@@ -92,9 +93,8 @@ export default function Busca() {
         <p className="text-sm text-gray-600 mb-6">Quem está falando de você no Instagram.</p>
 
         <div
-          className={`flex items-center rounded-lg px-4 py-3 shadow-md mb-4 ${
-            buscaBloqueada ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-black text-white'
-          }`}
+          className={`flex items-center rounded-lg px-4 py-3 shadow-md mb-4 ${buscaBloqueada ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-black text-white'
+            }`}
         >
           <FaAt className="mr-2" />
           <input
@@ -123,6 +123,20 @@ export default function Busca() {
         <div className="bg-orange-500 text-white text-sm font-medium px-4 py-3 rounded-md shadow-md">
           <strong>Atenção:</strong> Limite de apenas{' '}
           <span className="underline">1 PESQUISA</span> por dispositivo
+        </div>
+
+        <div>
+          <div className="bg-gray-100 rounded-xl p-4 mt-6 shadow-md text-center">
+            <p className="text-sm text-gray-700 font-semibold mb-1">WHATSAPP SPY</p>
+            <p className="text-sm text-gray-500 mb-2">Veja mensagens, fotos e conversas do WhatsApp de quem você quiser.</p>
+            <a
+              href="/acess/whatsapp"
+              className="inline-block bg-black text-white text-sm font-semibold px-4 py-2 rounded-full transition hover:bg-gray-800"
+            >
+              Acessar agora
+            </a>
+            <p className="text-xs text-gray-400 mt-2">Oferta disponível por tempo limitado</p>
+          </div>
         </div>
 
         {ultimaBusca && (
