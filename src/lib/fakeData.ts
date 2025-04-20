@@ -3,13 +3,13 @@ import { faker } from '@faker-js/faker/locale/pt_BR'
 export function generateFakeConversations() {
   return [
     {
-      name: faker.person.fullName(),
-      lastMessage: "Vamos confirmar o horário da reunião?",
+      name: faker.person.fullName({}),
+      lastMessage: "Estou com saudades",
       time: "12:45",
-      unread: 2,
+      unread: 0,
       status: "delivered",
       isOnline: true,
-      avatar: faker.image.avatar()
+      avatar: 'https://i.pravatar.cc/150?img=28'
     },
     {
       name: faker.person.fullName(),
@@ -150,6 +150,30 @@ export function generateFakeMessages(targetNumber: string, contactName: string) 
       status
     })
   }
+
+  // const nudes = {
+  //     id: 'img1',
+  //     imageUrl: '/1.jpg',
+  //     time: '20:33',
+  //     isFromTarget: false,
+  //     status: 'read'
+  // }
+  const nudes2 = {
+    id: 'img2',
+    imageUrl: '/2.jpg',
+    time: '20:33',
+    isFromTarget: true,
+    status: 'read'
+  }
+  // const nudes3 = {
+  //   id: 'img3',
+  //   imageUrl: '/3.jpg',
+  //   time: '20:33',
+  //   isFromTarget: false,
+  //   status: 'read'
+  // }
+
+  messages.push(nudes2);
   
   return messages
 }

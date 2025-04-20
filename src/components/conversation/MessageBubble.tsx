@@ -1,22 +1,26 @@
 'use client'
 
 import React, { useState } from 'react'
-import { FaCheckDouble, FaCheck, FaLock } from 'react-icons/fa'
+import Image from 'next/image'
+import { FaCheckDouble, FaCheck } from 'react-icons/fa'
 
-interface Message {
+interface ChatMessage {
   id: string
-  text: string
+  text?: string
+  imageUrl?: string
   time: string
   isFromTarget: boolean
   status?: 'sent' | 'delivered' | 'read'
 }
 
-interface MessageBubbleProps {
-  message: Message
+interface ChatBubbleProps {
+  message: ChatMessage
 }
 
-export default function MessageBubble({ message }: MessageBubbleProps) {
+export default function ChatBubble({ message }: ChatBubbleProps) {
   const [isBlurred, setIsBlurred] = useState(true)
+
+  const isImage = Boolean(message.imageUrl)
 
   return (
     <div className={`flex mb-4 ${message.isFromTarget ? 'justify-start' : 'justify-end'}`}>
@@ -24,11 +28,29 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
         max-w-[80%] rounded-lg px-3 py-2 relative
         ${message.isFromTarget ? 'bg-gray-700 text-white' : 'bg-green-800 text-white'}
       `}>
-        <p className={`text-sm ${isBlurred ? 'blur-sm select-none' : ''}`}>{message.text}</p>
-        
-        <div className="flex items-center justify-end mt-1 text-xs text-gray-400">
+        {/* Renderiza imagem ou texto */}
+        {isImage ? (
+          <div
+            className={`cursor-pointer ${isBlurred ? 'blur-md select-none' : ''}`}
+            onClick={() => setIsBlurred(false)}
+          >
+            <Image
+              src={message.imageUrl!}
+              alt="Mensagem com imagem"
+              width={250}
+              height={250}
+              className="object-cover rounded-lg"
+            />
+          </div>
+        ) : (
+          <p className={`text-sm ${isBlurred ? 'blur-sm select-none' : ''}`} onClick={() => setIsBlurred(false)}>
+            {message.text}
+          </p>
+        )}
+
+        {/* Status + Hora */}
+        <div className="flex items-center justify-end mt-1 text-xs text-gray-300">
           <span>{message.time}</span>
-          
           {!message.isFromTarget && message.status && (
             <span className="ml-1">
               {message.status === 'sent' && <FaCheck />}
@@ -37,14 +59,14 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
             </span>
           )}
         </div>
-        
-        {/* Message tail */}
-        <div className={`
-          absolute top-0 w-4 h-4 overflow-hidden
+
+        {/* Tail da mensagem */}
+        <div
+          className={`absolute top-0 w-4 h-4 overflow-hidden
           ${message.isFromTarget ? 'left-[-8px]' : 'right-[-8px]'}
         `}>
-          <div className={`
-            transform rotate-45 w-3 h-3 
+          <div
+            className={`transform rotate-45 w-3 h-3 
             ${message.isFromTarget ? 'bg-gray-700 ml-[6px]' : 'bg-green-800 ml-[-1px]'}
           `}></div>
         </div>
