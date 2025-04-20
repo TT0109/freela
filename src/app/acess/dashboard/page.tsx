@@ -22,8 +22,7 @@ const RandomFollowers = () => {
   const [visitantes, setVisitantes] = useState<{ avatar: string }[]>([]);
   const followings = useUserStore((state) => state.followers);
   const followers = useUserStore((state) => state.followings);
-  const email = emailStore((state) => state.email);
-  const router = useRouter();
+
 
   const load = useCallback(async () => {
     const allUsersMap = new Map();
@@ -45,12 +44,8 @@ const RandomFollowers = () => {
 
 
   useEffect(() => {
-    if(!email.id) {
-      router.push('/login');
-      return;
-    }
     load();
-  }, [email, load, router]);
+  }, [load]);
 
   return (
     <div className="flex justify-center -space-x-3 mt-2">
@@ -78,6 +73,7 @@ const CustomDashboard = () => {
   const getPublications = useUserStore((state) => (state.getPublications));
   const [city, setCity] = useState<string>('');
   const [procfileImage, setProcfileImage] = useState<string>('');
+  const email = emailStore((state) => state.email);
 
   const loadFollowers = useCallback(async () => {
     if (!user?.id) return;
@@ -101,6 +97,13 @@ const CustomDashboard = () => {
 
 
   useEffect(() => {
+
+    if(!email?.id) {
+      debugger;
+      router.push('/login');
+      return;
+    }
+
     loadFollowers();
     fetch('https://ipapi.co/json/')
       .then(res => res.json())
@@ -108,7 +111,7 @@ const CustomDashboard = () => {
         console.log('Cidade:', data.city);
         setCity(data.city);
       });
-  }, [loadFollowers]);
+  }, [email, email?.id, loadFollowers, router]);
 
   const handleNewSearch = () => {
     router.push('/acess/busca');

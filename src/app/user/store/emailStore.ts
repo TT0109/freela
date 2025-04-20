@@ -8,11 +8,11 @@ type Email = {
 };
 
 type EmailStore = {
-  email: Email;
+  email: Email | null;
 };
 
 export const emailStore = create<EmailStore>((set) => ({
-  email: { id: "", email: "" },
+  email: null,
   login: (email: string) => {
     axios.post("/api/v1/login", { email }).then((res) => {
       set({ email: res.data });
