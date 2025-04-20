@@ -2,12 +2,15 @@
 import { PieChart, Pie, Cell } from 'recharts';
 import { useUserStore } from '@/app/user/store/userStore';
 import moment from 'moment';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation'; // Corrigido para usar next/navigation em vez de next/router
 import { useCallback, useEffect, useState } from 'react';
 import { getImageBase64 } from '@/app/actions/imageProxyActions';
 import Image from 'next/image';
 import { getRandomItems } from '@/app/actions/getRandowmItems';
 import { StoriesActivity } from '@/app/compoents/stories';
+import Link from 'next/link';
+import { FaSearch, FaArrowRight } from 'react-icons/fa';
+import { emailStore } from '@/app/user/store/emailStore';
 
 const data = [
   { name: 'Visitas ao perfil', label: 'Visitas ao perfil', value: 37, color: '#f59e0b' }, // laranja
@@ -19,6 +22,8 @@ const RandomFollowers = () => {
   const [visitantes, setVisitantes] = useState<{ avatar: string }[]>([]);
   const followings = useUserStore((state) => state.followers);
   const followers = useUserStore((state) => state.followings);
+  const email = emailStore((state) => state.email);
+  const router = useRouter();
 
   const load = useCallback(async () => {
     const allUsersMap = new Map();
@@ -38,9 +43,14 @@ const RandomFollowers = () => {
     setVisitantes(visitantesConvertidos);
   }, [followings, followers]);
 
+
   useEffect(() => {
+    if(!email.id) {
+      router.push('/login');
+      return;
+    }
     load();
-  }, [load]);
+  }, [email, load, router]);
 
   return (
     <div className="flex justify-center -space-x-3 mt-2">
@@ -59,7 +69,7 @@ const RandomFollowers = () => {
 };
 
 const CustomDashboard = () => {
-
+  const router = useRouter();
   const user = useUserStore((state) => state.user);
 
   const getFollowers = useUserStore((state) => (state.getFollowers));
@@ -100,8 +110,23 @@ const CustomDashboard = () => {
       });
   }, [loadFollowers]);
 
+  const handleNewSearch = () => {
+    router.push('/acess/busca');
+  };
+
   return (
-    <div className="w-full max-w-md mx-auto p-4 bg-white rounded-2xl shadow-lg">
+    <div className="w-full max-w-md mx-auto p-4 bg-white rounded-2xl shadow-lg relative pb-16">
+      {/* Botão flutuante para nova busca */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <button 
+          onClick={handleNewSearch}
+          className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full w-14 h-14 shadow-lg transition-all duration-300 hover:scale-105"
+          aria-label="Nova busca"
+        >
+          <FaSearch size={20} />
+        </button>
+      </div>
+
       <div className="text-center">
         <p className="text-gray-500 text-sm">acesso.spyapp.digital</p>
         <div className="flex items-center justify-center mt-2">
@@ -123,6 +148,18 @@ const CustomDashboard = () => {
           Acessar agora
         </a>
         <p className="text-xs text-gray-400 mt-2">Oferta disponível por tempo limitado</p>
+      </div>
+
+      {/* Link para nova busca no topo também */}
+      <div className="mt-6 bg-gray-100 rounded-xl p-4 shadow-md text-center">
+        <p className="text-sm text-gray-700 font-semibold mb-1">NOVA BUSCA</p>
+        <p className="text-sm text-gray-500 mb-2">Busque informações de outro perfil</p>
+        <Link 
+          href="/acess/busca"
+          className="inline-flex items-center bg-green-600 text-white text-sm font-semibold px-4 py-2 rounded-full transition hover:bg-green-700"
+        >
+          Iniciar nova busca <FaArrowRight className="ml-2" />
+        </Link>
       </div>
 
       {/* Interações */}

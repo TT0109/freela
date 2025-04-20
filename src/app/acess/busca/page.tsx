@@ -55,7 +55,10 @@ export default function Busca() {
   }
 
   useEffect(() => {
-    if (!email?.id) return
+    if (!email?.id) {
+      router.push('/login')
+      return
+    }
 
     const fetchUltimaBusca = async () => {
       try {
