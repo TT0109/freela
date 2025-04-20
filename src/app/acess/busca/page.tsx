@@ -29,11 +29,12 @@ export default function Busca() {
         setError('Usuário não encontrado.')
         return
       }
-      window.alert('id' + email.id)
-      await axios.post('/api/v1/busca', {
-        email: email.id,
-        username: user.username,
-      })
+      if(email?.id) {
+        await axios.post('/api/v1/busca', {
+          email: email.id,
+          username: user.username,
+        })
+      }
 
       setError('')
       setUserStore(user)
