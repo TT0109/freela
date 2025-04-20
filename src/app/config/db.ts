@@ -1,16 +1,32 @@
 import sqlite3 from "sqlite3";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const dbPathLocal = path.resolve(__dirname, "collection.db");
+
+const dbPath = process.env.VERCEL
+  ? "/tmp/collection.db"
+  : dbPathLocal;
+
+if (process.env.VERCEL && fs.existsSync(dbPathLocal)) {
+  fs.copyFileSync(dbPathLocal, dbPath);
+}
 
 const db = new sqlite3.Database(
-  "./collection.db",
+  dbPath,
   sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
   (err) => {
     if (err) {
-      return console.error(err.message);
+      return console.error("Erro ao conectar ao SQLite:", err.message);
     }
+
     console.log("Connected to the SQLite database.");
 
     db.serialize(() => {
-      // Criação da tabela de e-mails
       db.run(`
         CREATE TABLE IF NOT EXISTS TbEmails (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,7 +34,6 @@ const db = new sqlite3.Database(
         )
       `);
 
-      // Criação da tabela de buscas
       db.run(`
         CREATE TABLE IF NOT EXISTS TbBusca (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
