@@ -31,10 +31,12 @@ export default function InfoPage() {
   const loadFollowers = useCallback(async () => {
     if (!user?.id) return;
     try {
-      await getFollowings(user.id, 10, null);
-      await getFollowers(user.id, 10, null);
-      await getStories(user.id);
-      await getPublications(user.id, 10, null);
+      await Promise.all([
+        await getFollowings(user.id, 10, null),
+        await getFollowers(user.id, 10, null),
+        await getStories(user.id),
+        await getPublications(user.id, 10, null)
+      ])
     } catch (err) {
       console.error("Erro ao carregar listas:", err);
     }

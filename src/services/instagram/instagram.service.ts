@@ -1,7 +1,6 @@
 import { getImageBase64 } from "@/app/actions/imageProxyActions";
 import { UserInfoResponse } from "@/interface/UserInfoResponse";
 import api from "@/lib/axios/instance";
-import { get } from "http";
 
 export class Instagram {
   constructor() { }

@@ -28,7 +28,7 @@ const PaymentPage: React.FC = () => {
 
     useEffect(() => {
         if (timeLeft <= 0) {
-          window.location.href = 'https://meupainel.digital/';
+          window.location.href = 'https://go.perfectpay.com.br/PPU38CPMP2C';
           return;
         }
       

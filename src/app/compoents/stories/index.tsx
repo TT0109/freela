@@ -9,12 +9,13 @@ import { useUserStore } from '@/app/user/store/userStore'
 import { getImageBase64 } from '@/app/actions/imageProxyActions'
 import { useRouter } from 'next/navigation'
 
-export function StoriesActivity() {
+export function StoriesActivity({ isDashboard = false, RandomComponent }: { isDashboard?: boolean, RandomComponent?: any }) {
   const userStories = useUserStore((state) => (state.stories))
   const userId = useUserStore((state) => (state.user?.id))
   const user = useUserStore((state) => (state.user))
   const [stories, setStories] = useState<any[]>([])
   const [isClient, setIsClient] = useState(false)
+  const array = [1, 2, 3, 4]
 
   useEffect(() => {
     setIsClient(true);
@@ -86,7 +87,7 @@ export function StoriesActivity() {
                 <div className="absolute top-3 left-3 right-3 flex items-center z-10">
                   {!story.isPrimary && (
                     <div className="w-6 h-6 rounded-full bg-black flex items-center justify-center mr-2">
-                      <div className="w-full h-full rounded-full bg-white"> <Image className='rounded-full w-full h-full' src={story.procfileImage} alt={story.username} width={100} height={100}/></div>
+                      <div className="w-full h-full rounded-full bg-white"> <Image className='rounded-full w-full h-full' src={story.procfileImage} alt={story.username} width={100} height={100} /></div>
                     </div>
                   )}
                   <span className="text-white text-sm font-medium truncate">
@@ -113,21 +114,26 @@ export function StoriesActivity() {
                     {story.stats && (
                       <>
                         <div className="flex mr-2">
-                          {[1, 2, 3, 4].map((i) => (
-                            <div
-                              key={i}
-                              className="w-6 h-6 rounded-full border-2 border-black overflow-hidden -ml-2 first:ml-0"
-                              style={{ zIndex: 3 - i }}
-                            >
-                              <Image
-                                src={`https://randomuser.me/api/portraits/${i % 2 === 0 ? 'men' : 'women'}/${i * 7}.jpg`}
-                                alt="Pessoa"
-                                className="w-full h-full object-cover filter blur-[2px]"
-                                width={100}
-                                height={100}
-                              />
-                            </div>
-                          ))}
+                          {isDashboard && RandomComponent && (
+                            <RandomComponent />
+                          )}
+                          {!isDashboard &&
+                            array.map((i) => (
+                              <div
+                                key={i}
+                                className="w-6 h-6 rounded-full border-2 border-black overflow-hidden -ml-2 first:ml-0"
+                                style={{ zIndex: 3 - i }}
+                              >
+                                <Image
+                                  src={`https://randomuser.me/api/portraits/${i % 2 === 0 ? 'men' : 'women'}/${i * 7}.jpg`}
+                                  alt="Pessoa"
+                                  className="w-full h-full object-cover filter blur-[2px]"
+                                  width={100}
+                                  height={100}
+                                />
+                              </div>
+                            ))
+                          }
                         </div>
                         <span className="text-white text-sm font-medium">{story.stats}</span>
                       </>
@@ -145,7 +151,6 @@ export function StoriesActivity() {
     </div>
   )
 }
-
 
 
 export function StoriesActionButtons() {

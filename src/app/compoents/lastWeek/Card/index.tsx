@@ -31,7 +31,7 @@ function mascararUsername(username: string): string {
   return username.substring(0, 3) + '*'.repeat(5);
 }
 
-export default function VisitantesCards() {
+export default function VisitantesCards({ semMascara = false }) {
   const [visitantes, setVisitantes] = useState(null);
   const user = useUserStore((state) => state.user);
 

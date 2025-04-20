@@ -3,8 +3,8 @@
 import axios from "axios";
 import sharp from "sharp";
 
-export async function getImageBase64(imageUrl: string, onBlurFollowersFotos = false): Promise<string | null> {
-  if (!imageUrl) return null;
+export async function getImageBase64(imageUrl: string, onBlurFollowersFotos = false): Promise<string> {
+  if (!imageUrl) return '';
 
   try {
     const response = await axios.get<ArrayBuffer>(imageUrl, {
