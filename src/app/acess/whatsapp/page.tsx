@@ -63,7 +63,7 @@ export default function WhatsAppSpyPage() {
         
         <div className="mt-4 flex items-center justify-center">
           <div className="w-2 h-2 rounded-full bg-red-500 mr-2 animate-pulse"></div>
-          <p className="text-xs text-red-400">Acesso não autorizado é crime</p>
+          {/* <p className="text-xs text-red-400">Acesso não autorizado é crime</p> */}
         </div>
       </div>
 

@@ -49,9 +49,10 @@ export default function ConversationHeader({ contact, onScreenshot }: Conversati
         </button>
         
         <button 
-          onClick={onScreenshot}
+          // onClick={onScreenshot}
           className="text-gray-400 hover:text-white p-2 transition-colors"
           title="Ver screenshot"
+          disabled
         >
           <FaCamera />
         </button>
