@@ -4,14 +4,17 @@ import { useRouter } from "next/navigation";
 import { PiDetectiveBold } from "react-icons/pi";
 import { BsInstagram } from "react-icons/bs";
 import { BsWhatsapp } from "react-icons/bs";
+import { useCallback, useEffect } from "react";
+import { emailStore } from "../user/store/emailStore";
 
 export default function PainelSpy() {
 
   const router = useRouter();
+  const email = emailStore((state) => state.email);
 
-  const handleProfileSpy = () => {
+  const handleProfileSpy = useCallback(() => {
     router.push('/acess/busca');
-  };
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-white px-4 py-5">
