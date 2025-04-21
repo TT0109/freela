@@ -13,9 +13,8 @@ type EmailStore = {
 
 export const emailStore = create<EmailStore>((set) => ({
   email: null,
-  login: (email: string) => {
-    axios.post("/api/v1/login", { email }).then((res) => {
-      set({ email: res.data });
-    });
+  login: async (email: string) => {
+    const res = await axios.post("/api/v1/login", { email });
+    set({ email: res.data });
   } 
 }));

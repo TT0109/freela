@@ -28,10 +28,7 @@ export default function LoginPage() {
       setLoading(true);
       setError(""); // Limpa erro anterior
       await login(inputEmail);
-      
-      setTimeout(() => { 
-        router.push("/acess");
-       }, 3000);
+      router.push("/acess");
     } catch (err) {
       console.error("Erro no login", err);
       setError("Não foi possível realizar o login. Tente novamente.");
