@@ -27,7 +27,7 @@ export default function LoginPage() {
     try {
       setLoading(true);
       setError(""); // Limpa erro anterior
-      await login(inputEmail);
+      // await login(inputEmail);
       router.push("/acess");
     } catch (err) {
       console.error("Erro no login", err);

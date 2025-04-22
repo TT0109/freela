@@ -106,8 +106,14 @@ export default function SearchProfile() {
                     <p className="mt-4 text-sm text-gray-600">Seu perfil está correto?</p>
 
                     <Button
-                        onClick={() => {
-                            router.push(`/user/info`);
+                         onClick={() => {
+                            const alreadySearched = localStorage.getItem("hasSearched");
+                            if (alreadySearched) {
+                                router.push(`/user/payments?limitExeceded=true`);
+                            } else {
+                                localStorage.setItem("hasSearched", 'true');
+                                router.push(`/user/info`);
+                            }
                         }}
                         className="mt-4 w-full bg-orange-500 text-white font-semibold py-3 rounded-xl shadow-md"
                     >

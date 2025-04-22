@@ -10,21 +10,23 @@ import {
     AlertCircle,
     Clock,
     Check,
+    AlertTriangle,
 } from 'lucide-react';
 import { useUserStore } from '../store/userStore';
 import { getImageBase64 } from '@/app/actions/imageProxyActions';
-import { Redirect } from 'next';
 import Image from 'next/image';
-const PaymentPage: React.FC = () => {
+import { useSearchParams } from 'next/navigation';
+
+const PaymentPage: React.FC = ({ searchParams }: { searchParams?: any }) => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutos
-    const user = useUserStore(state => state.user);
+    const user = useUserStore((state) => state.user);
     const [profileImage, setProfileImage] = useState<string | null>(null);
-    
+
+    const limitExceeded = searchParams['limitExeceded'] === 'true';
 
     useEffect(() => {
         const load = async () => {
             if (user?.profile_pic_url_hd) {
-                debugger;
                 const img = await getImageBase64(user.profile_pic_url_hd);
                 setProfileImage(img);
             }
@@ -35,7 +37,7 @@ const PaymentPage: React.FC = () => {
     useEffect(() => {
         if (timeLeft <= 0) return;
         const timer = setInterval(() => {
-            setTimeLeft(prev => prev - 1);
+            setTimeLeft((prev) => prev - 1);
         }, 1000);
         return () => clearInterval(timer);
     }, [timeLeft]);
@@ -44,12 +46,20 @@ const PaymentPage: React.FC = () => {
     const seconds = timeLeft % 60;
 
     const redirectToPayments = () => {
-       window.location.href = 'https://go.perfectpay.com.br/PPU38CPMP2C'
-    }
+        window.location.href = 'https://go.perfectpay.com.br/PPU38CPMP2C';
+    };
 
     return (
         <div className="min-h-screen p-4 flex items-center justify-center">
-            <div className="w-full max-w-sm h-screen bg-white flex flex-col mx-auto overflow-y-auto rounded-lg shadow-lg">
+            <div className="w-full max-w-sm h-full bg-white flex flex-col mx-auto overflow-y-auto rounded-lg shadow-lg">
+
+                {/* Aviso de limite excedido */}
+                {limitExceeded && (
+                    <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-3 text-sm flex items-center gap-2">
+                        <AlertTriangle className="w-5 h-5" />
+                        Você já utilizou sua busca gratuita. Desbloqueie o relatório completo para continuar.
+                    </div>
+                )}
 
                 {/* Timer */}
                 <div className="bg-red-500 text-white p-2 flex items-center justify-center space-x-2">
@@ -60,7 +70,7 @@ const PaymentPage: React.FC = () => {
                 </div>
 
                 {/* Foto do perfil */}
-                <div className="flex-grow h-full px-6 pb-4 pt-10 text-center">
+                <div className="flex-grow px-6 pb-4 pt-10 text-center">
                     {profileImage ? (
                         <Image
                             src={profileImage}
@@ -72,12 +82,12 @@ const PaymentPage: React.FC = () => {
                     ) : (
                         <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 animate-pulse border-4 border-white" />
                     )}
-                    {
-                        user && (
-                            <><h1 className="text-xl font-bold">Olá {user.full_name}</h1><p className="text-orange-600 font-medium">@{user.username}</p></>
-                        )
-                    }
-
+                    {user && (
+                        <>
+                            <h1 className="text-xl font-bold">Olá {user.full_name}</h1>
+                            <p className="text-orange-600 font-medium">@{user.username}</p>
+                        </>
+                    )}
                 </div>
 
                 {/* Banner */}
@@ -126,8 +136,8 @@ const PaymentPage: React.FC = () => {
                     ))}
                 </div>
 
-                {/* Example User Review */}
-                <div className="px-4 py-2">
+                {/* Exemplo de review */}
+                <div className="px-4 py-4">
                     <div className="border rounded-lg p-3 flex items-start">
                         <div className="w-12 h-12 rounded-full overflow-hidden mr-3 flex-shrink-0">
                             <Image
@@ -139,17 +149,19 @@ const PaymentPage: React.FC = () => {
                             />
                         </div>
                         <div>
-                            <div className="flex items-center">
+                            <div className="flex items-center flex-wrap gap-x-2">
                                 <p className="font-semibold text-gray-800">Luzianne</p>
-                                <p className="ml-2 text-gray-500 text-xs">@allannavieira1334</p>
-                                <p className="ml-2 text-gray-500 text-xs">15min</p>
+                                <p className="text-gray-500 text-xs">@allannavieira1334</p>
+                                <p className="text-gray-500 text-xs">15min</p>
                             </div>
-                            <p className="text-sm text-gray-700 mt-1">MENINA DO CÉU!!!! Toma cuidado com o EX de vcs, só falo isso, descobri que o abençoado tá tirando print de todos meus storie, pra q isso??????</p>
+                            <p className="text-sm text-gray-700 mt-1">
+                                MENINA DO CÉU!!!! Toma cuidado com o EX de vcs, só falo isso, descobri que o abençoado tá tirando print de todos meus storie, pra q isso??????
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                {/* Pricing Section */}
+                {/* Preço */}
                 <div className="px-4 py-4">
                     <div className="border rounded-lg p-4">
                         <div className="flex items-start justify-between">
@@ -161,7 +173,7 @@ const PaymentPage: React.FC = () => {
                                 </div>
                             </div>
                             <div className="bg-orange-500 text-white text-xs font-semibold py-1 px-2 rounded">
-                                Promoção 50%OFF
+                                Promoção 50% OFF
                             </div>
                         </div>
 
@@ -176,33 +188,22 @@ const PaymentPage: React.FC = () => {
                         </div>
 
                         <div className="mt-4 space-y-2">
-                            <div className="flex items-center">
-                                <div className="w-5 h-5 mr-2 text-orange-500">
-                                    <Check className="w-full h-full" />
+                            {[
+                                'Acesso vitalício e Imediato',
+                                'Atualizações semanais',
+                                'Dados em tempo real',
+                                'Pagamento Único',
+                            ].map((item, idx) => (
+                                <div className="flex items-center" key={idx}>
+                                    <div className="w-5 h-5 mr-2 text-orange-500">
+                                        <Check className="w-full h-full" />
+                                    </div>
+                                    <p className="text-sm text-gray-700">{item}</p>
                                 </div>
-                                <p className="text-sm text-gray-700">Acesso vitalício e Imediato</p>
-                            </div>
-                            <div className="flex items-center">
-                                <div className="w-5 h-5 mr-2 text-orange-500">
-                                    <Check className="w-full h-full" />
-                                </div>
-                                <p className="text-sm text-gray-700">Atualizações semanais</p>
-                            </div>
-                            <div className="flex items-center">
-                                <div className="w-5 h-5 mr-2 text-orange-500">
-                                    <Check className="w-full h-full" />
-                                </div>
-                                <p className="text-sm text-gray-700">Dados em tempo real</p>
-                            </div>
-                            <div className="flex items-center">
-                                <div className="w-5 h-5 mr-2 text-orange-500">
-                                    <Check className="w-full h-full" />
-                                </div>
-                                <p className="text-sm text-gray-700">Pagamento Único</p>
-                            </div>
+                            ))}
                         </div>
 
-                        {/* Bonus Section */}
+                        {/* Bônus */}
                         <div className="mt-4 border rounded-lg p-3 bg-gray-50">
                             <div className="flex">
                                 <div className="bg-orange-500 text-white text-xs font-semibold py-1 px-2 rounded mr-2">
@@ -220,8 +221,11 @@ const PaymentPage: React.FC = () => {
                 </div>
 
                 {/* Botão de ação final */}
-                <div className="p-4 mt-auto">
-                    <button className="w-full bg-orange-500 hover:bg-orange-600 transition text-white py-3 rounded-lg font-medium flex items-center justify-center cursor-pointer" onClick={redirectToPayments}>
+                <div className="p-4 sticky bottom-0 bg-white z-10">
+                    <button
+                        className="w-full bg-orange-500 hover:bg-orange-600 transition text-white py-3 rounded-lg font-medium flex items-center justify-center"
+                        onClick={redirectToPayments}
+                    >
                         <CreditCard className="mr-2 w-5 h-5" />
                         Desbloquear relatório completo
                     </button>

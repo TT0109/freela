@@ -1,20 +1,28 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { FiSearch } from 'react-icons/fi'
 import { FaAt } from 'react-icons/fa'
 import { useUserStore } from '@/app/user/store/userStore'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { emailStore } from '@/app/user/store/emailStore'
+import FloatingPaywall from '../FloatingPaywall'
 
 export default function Busca() {
   const [username, setUsername] = useState('')
   const [error, setError] = useState('')
+  const [bloqueado, setBloqueado] = useState(false)
   const { setUser: setUserStore } = useUserStore()
   const email = emailStore((state) => state.email)
-  const [ultimaBusca, setUltimaBusca] = useState<any>(null)
   const router = useRouter()
+
+  useEffect(() => {
+    const jaBuscou = localStorage.getItem('ultimaBusca')
+    if (jaBuscou) {
+      setBloqueado(true)
+      localStorage.setItem('bloqueio_busca', 'true') // garante sincronismo
+    }
+  }, [])
 
   const redirect = () => {
     router.push('/acess/dashboard')
@@ -30,12 +38,8 @@ export default function Busca() {
         return
       }
 
-      if (email?.id) {
-        await axios.post('/api/v1/busca', {
-          email: email.id,
-          username: user.username,
-        })
-      }
+      localStorage.setItem('ultimaBusca', username)
+      localStorage.setItem('bloqueio_busca', 'true')
 
       setError('')
       setUserStore(user)
@@ -52,38 +56,15 @@ export default function Busca() {
       return
     }
 
+    if (bloqueado) return
+
     setError('')
     searchProfile()
   }
 
-  useEffect(() => {
-    if (!email?.id) {
-      router.push('/login')
-      return
-    }
-
-    const fetchUltimaBusca = async () => {
-      try {
-        const response = await axios.get(`/api/v1/busca?idEmail=${email.id}`)
-        const data = response?.data?.data
-
-        if (data) setUltimaBusca(data)
-      } catch (err) {
-        console.error('Erro ao buscar última busca:', err)
-      }
-    }
-
-    fetchUltimaBusca()
-  }, [email])
-
-  const buscaBloqueada = !!ultimaBusca
-
-  const redirectToPayments = () => {
-    window.location.href = 'https://go.perfectpay.com.br/PPU38CPMP2K?upsell=true'
-  }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-4">
+      <FloatingPaywall onClose={() => {}} />
       <div className="w-full max-w-md text-center">
         <div className="bg-orange-500 p-4 rounded-full w-fit mx-auto mb-4">
           <span className="text-white text-3xl">🕵️‍♂️</span>
@@ -92,27 +73,23 @@ export default function Busca() {
         <h1 className="text-2xl font-bold mb-1 text-gray-900">Descubra agora</h1>
         <p className="text-sm text-gray-600 mb-6">Quem está falando de você no Instagram.</p>
 
-        <div
-          className={`flex items-center rounded-lg px-4 py-3 shadow-md mb-4 ${buscaBloqueada ? 'bg-gray-200 text-gray-400 cursor-not-allowed' : 'bg-black text-white'
-            }`}
-        >
+        <div className="flex items-center rounded-lg px-4 py-3 shadow-md mb-2 bg-black text-white">
           <FaAt className="mr-2" />
           <input
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="username do Instagram"
-            disabled={buscaBloqueada}
-            className="bg-transparent outline-none w-full placeholder-gray-400 text-sm disabled:cursor-not-allowed"
+            className="bg-transparent outline-none w-full placeholder-gray-400 text-sm"
           />
-          <button
-            onClick={handleSearch}
-            disabled={buscaBloqueada}
-            className={`ml-2 ${buscaBloqueada ? 'opacity-50 cursor-not-allowed' : ''}`}
-          >
-            <FiSearch className="text-purple-500 hover:text-purple-300 transition" size={20} />
-          </button>
         </div>
+
+        <button
+          onClick={handleSearch}
+          className="bg-purple-600 hover:bg-purple-700 text-white font-medium text-sm py-2 px-6 rounded-md mb-4 transition"
+        >
+          🔍 Pesquisar
+        </button>
 
         {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
 
@@ -121,46 +98,8 @@ export default function Busca() {
         </p>
 
         <div className="bg-orange-500 text-white text-sm font-medium px-4 py-3 rounded-md shadow-md">
-          <strong>Atenção:</strong> Limite de apenas{' '}
-          <span className="underline">1 PESQUISA</span> por dispositivo
+          <strong>Atenção:</strong> Limite de apenas <span className="underline">1 PESQUISA</span> por dispositivo
         </div>
-
-        <div>
-          <div className="bg-gray-100 rounded-xl p-4 mt-6 shadow-md text-center">
-            <p className="text-sm text-gray-700 font-semibold mb-1">WHATSAPP SPY</p>
-            <p className="text-sm text-gray-500 mb-2">Veja mensagens, fotos e conversas do WhatsApp de quem você quiser.</p>
-            <a
-              href="/acess/whatsapp"
-              className="inline-block bg-black text-white text-sm font-semibold px-4 py-2 rounded-full transition hover:bg-gray-800"
-            >
-              Acessar agora
-            </a>
-            <p className="text-xs text-gray-400 mt-2">Oferta disponível por tempo limitado</p>
-          </div>
-        </div>
-
-        {ultimaBusca && (
-          <div className="bg-gray-100 border border-gray-300 p-4 rounded-md mb-4 text-left mt-4">
-            <p className="text-sm text-gray-700">
-              Última busca feita: <strong>{ultimaBusca.username}</strong>
-            </p>
-            <p className="text-xs text-gray-500 mt-1">
-              Executada em: {new Date(ultimaBusca.dataExecucao).toLocaleString()}
-            </p>
-
-            <button
-              className="mt-3 bg-purple-600 text-white px-4 py-2 rounded-md text-sm hover:bg-purple-500 transition"
-              // eslint-disable-next-line react/jsx-no-duplicate-props
-              onClick={(e) => {
-                e.preventDefault();
-                // alert('Comprar mais buscas (em construção)'); // se ainda quiser manter isso
-                redirectToPayments();
-              }}
-            >
-              Comprar mais buscas
-            </button>
-          </div>
-        )}
       </div>
     </div>
   )

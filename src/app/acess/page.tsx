@@ -3,18 +3,25 @@ import { Bell, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { PiDetectiveBold } from "react-icons/pi";
 import { BsInstagram } from "react-icons/bs";
-import { BsWhatsapp } from "react-icons/bs";
 import { useCallback, useEffect } from "react";
 import { emailStore } from "../user/store/emailStore";
 
 export default function PainelSpy() {
-
   const router = useRouter();
-  const email = emailStore((state) => state.email);
 
   const handleProfileSpy = useCallback(() => {
+    // Limpar o cache da busca ao entrar na página
+    localStorage.removeItem('ultimaBusca');
+    localStorage.removeItem('bloqueio_busca');
+    
     router.push('/acess/busca');
   }, [router]);
+
+  useEffect(() => {
+    // Limpar o cache toda vez que o componente for montado
+    localStorage.removeItem('ultimaBusca');
+    localStorage.removeItem('bloqueio_busca');
+  }, []);
 
   return (
     <div className="min-h-screen bg-white px-4 py-5">
@@ -58,7 +65,7 @@ export default function PainelSpy() {
           </p>
         </button>
 
-        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-green-50 active:scale-[0.98] opacity-60">
+        {/* <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-green-50 active:scale-[0.98] opacity-60">
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <div className="bg-green-400 p-1.5 rounded-full">
@@ -74,7 +81,7 @@ export default function PainelSpy() {
           <span className="absolute bottom-3 right-3 bg-yellow-400 text-xs px-3 py-1 rounded-full text-white font-semibold">
             Comprar
           </span>
-        </button>
+        </button> */}
       </div>
     </div>
   );
