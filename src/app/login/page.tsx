@@ -6,12 +6,13 @@ import { emailStore } from "../user/store/emailStore";
 import { PiDetective } from "react-icons/pi";
 import { useSearchParmsStore } from "../user/store/searchParams";
 
-export default function LoginPage({ searchParams }: { searchParams: any }) {
+export default function LoginPage() {
   const [inputEmail, setInputEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { login } = emailStore((state: any) => state);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const isValidEmail = (email: string) => {
     // Regex simples e confiável para validar e-mail
@@ -50,7 +51,7 @@ export default function LoginPage({ searchParams }: { searchParams: any }) {
 
     setSearchParams(paramsObj);
     console.log("Todos os parâmetros:", getQueryString());
-  }, [searchParams]);
+  }, [getQueryString, searchParams, setSearchParams]);
 
   return (
     <div>
