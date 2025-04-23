@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import FacebookPixel from "./FacebookPixel";
 import { Suspense } from "react";
+import Head from "./head";
+import path from 'path'
+import fs from 'fs'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +31,11 @@ export const metadata: Metadata = {
   },
 };
 
+const gtmBody = fs.readFileSync(
+  path.resolve(process.cwd(), 'scripts/gtm-body.txt'),
+  'utf-8'
+)
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,6 +45,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Suspense>
+          <div dangerouslySetInnerHTML={{ __html: gtmBody }} />
+          <Head />
           <FacebookPixel pixelId={process.env.FACEBOOK_PIXEL_ID!}/>
           {children}
         </Suspense>
