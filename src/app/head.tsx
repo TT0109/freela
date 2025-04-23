@@ -6,13 +6,11 @@ export default function Head() {
     path.resolve(process.cwd(), 'scripts/gtm-head.txt'),
     'utf-8'
   )
-
   console.log(gtmHeadScript)
-
   return (
     <>
-      <title>Minha App</title>
-      <meta name="description" content="Minha descrição" />
+      <title>O Detetive do instagram</title>
+      <meta name="description" content="Descubra quem está espionando seu perfil do instagram" />
       <div dangerouslySetInnerHTML={{ __html: gtmHeadScript }} />
     </>
   )
