@@ -41,9 +41,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <div dangerouslySetInnerHTML={{ __html: gtmBody }} />
+        <Head />
         <Suspense>
-          <div dangerouslySetInnerHTML={{ __html: gtmBody }} />
-          <Head />
           <FacebookPixel pixelId={process.env.FACEBOOK_PIXEL_ID!}/>
           {children}
         </Suspense>
