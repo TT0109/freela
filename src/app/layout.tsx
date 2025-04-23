@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import FacebookPixel from "./FacebookPixel";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,7 +22,7 @@ export const metadata: Metadata = {
       {
         url: "/logo.jpg",
         sizes: "32x32",
-        type: "image/jpg", 
+        type: "image/jpg",
       },
     ],
   },
@@ -33,10 +35,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Suspense>
+          <FacebookPixel pixelId={process.env.FACEBOOK_PIXEL_ID!}/>
+          {children}
+        </Suspense>
       </body>
     </html>
   );

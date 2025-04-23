@@ -5,6 +5,7 @@ import { useUserStore } from '../user/store/userStore';
 import { getImageBase64 } from '../actions/imageProxyActions';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import { useSearchParmsStore } from '../user/store/searchParams';
 
 const PaymentPage: React.FC = () => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds

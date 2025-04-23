@@ -29,6 +29,7 @@ const nextConfig: NextConfig = {
     WHATSAPP_API_URL: 'https://whatsapp-data1.p.rapidapi.com',
     WHATSAPP_API_HEADER_HOST: 'whatsapp-data1.p.rapidapi.com',
     WHATSAPP_RAPIDAPI_KEY: '86bf04e7f5mshadf0cf3d655fe22p18860fjsn0b5d6c8644d0',
+    FACEBOOK_PIXEL_ID: '111111111111111',
   },
 };
 

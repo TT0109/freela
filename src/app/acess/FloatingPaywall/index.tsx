@@ -1,8 +1,10 @@
 'use client'
+import { useSearchParmsStore } from '@/app/user/store/searchParams';
 import { useEffect, useState } from 'react'
 
 export default function FloatingPaywall({ onClose }: { onClose: () => void }) {
   const [show, setShow] = useState(false)
+  const getQueryString = useSearchParmsStore(state=> state.getQueryString);
 
   useEffect(() => {
     const blocked = localStorage.getItem('bloqueio_busca')
@@ -15,12 +17,12 @@ export default function FloatingPaywall({ onClose }: { onClose: () => void }) {
 
   const redirectToPaymentsPremium = () => {
     localStorage.removeItem('bloqueio_busca')
-    window.location.href = 'https://go.perfectpay.com.br/PPU38CPMP2K?upsell=true'
+    window.location.href = 'https://go.perfectpay.com.br/PPU38CPMP2K?upsell=true' + getQueryString()
   }
 
   const redirectToPaymentsDiamond = () => {
     localStorage.removeItem('bloqueio_busca')
-    window.location.href = 'https://go.perfectpay.com.br/PPU38CPMP30?upsell=true'
+    window.location.href = 'https://go.perfectpay.com.br/PPU38CPMP30?upsell=true' + getQueryString()
   }
 
   if (!show) return null

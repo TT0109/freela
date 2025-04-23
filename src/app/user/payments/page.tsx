@@ -16,11 +16,13 @@ import { useUserStore } from '../store/userStore';
 import { getImageBase64 } from '@/app/actions/imageProxyActions';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
+import { useSearchParmsStore } from '../store/searchParams';
 
 const PaymentPage: React.FC = ({ searchParams }: { searchParams?: any }) => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutos
     const user = useUserStore((state) => state.user);
     const [profileImage, setProfileImage] = useState<string | null>(null);
+    const getQueryString = useSearchParmsStore(state=> state.getQueryString);
 
     const limitExceeded = searchParams['limitExeceded'] === 'true';
 
@@ -46,7 +48,7 @@ const PaymentPage: React.FC = ({ searchParams }: { searchParams?: any }) => {
     const seconds = timeLeft % 60;
 
     const redirectToPayments = () => {
-        window.location.href = 'https://go.perfectpay.com.br/PPU38CPMP2C';
+        window.location.href = 'https://go.perfectpay.com.br/PPU38CPMP2C' + getQueryString();
     };
 
     return (

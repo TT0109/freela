@@ -1,11 +1,12 @@
 'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { emailStore } from "../user/store/emailStore";
 import { PiDetective } from "react-icons/pi";
+import { useSearchParmsStore } from "../user/store/searchParams";
 
-export default function LoginPage() {
+export default function LoginPage({ searchParams }: { searchParams: any }) {
   const [inputEmail, setInputEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -37,7 +38,23 @@ export default function LoginPage() {
     }
   };
 
+  const setSearchParams = useSearchParmsStore(state => state.setSearchParams);
+  const searchParams2 = useSearchParmsStore(state=> state.searchParams);
+  const getQueryString = useSearchParmsStore(state=> state.getQueryString);
+
+  useEffect(() => {
+    const paramsObj: { [key: string]: string } = {};
+    searchParams.forEach((value, key) => {
+      paramsObj[key] = value;
+    });
+
+    setSearchParams(paramsObj);
+    console.log("Todos os parâmetros:", getQueryString());
+  }, [searchParams]);
+
   return (
+    <div>
+    <Suspense fallback={<div>Carregando...</div>}>
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6">
       <PiDetective size={80} className="text-orange-400 mb-8" />
 
@@ -75,6 +92,8 @@ export default function LoginPage() {
         Você sempre poderá <span className="text-white font-medium">acessar</span> essa plataforma<br />
         usando o <span className="text-white font-medium">link</span> de acesso enviado em seu <span className="text-white font-medium">e-mail</span>.
       </p>
+    </div>
+    </Suspense>
     </div>
   );
 }
