@@ -8,11 +8,13 @@ import { AiFillPicture } from "react-icons/ai";
 import { MdOutlineEmail } from "react-icons/md";
 import { useState, useCallback, useEffect } from "react";
 import { emailStore } from "../user/store/emailStore";
+import { useSearchParmsStore } from "../user/store/searchParams";
 
 export default function PainelSpy() {
   const router = useRouter();
   const [showPopup, setShowPopup] = useState(false);
   const [popupData, setPopupData] = useState({ title: '', price: 0, redirectLink: '' });
+   const getQueryString = useSearchParmsStore(state=> state.getQueryString);
 
   const handleProfileSpy = useCallback(() => {
     // Limpar o cache da busca ao entrar na página
@@ -34,7 +36,7 @@ export default function PainelSpy() {
   const handleAcquireLicense = () => {
     // Adiciona o preço como parâmetro na URL de redirecionamento
     if (popupData.redirectLink) {
-      const url = `${popupData.redirectLink}?price=${popupData.price.toFixed(2)}`;
+      const url = `${popupData.redirectLink}`;
       router.push(url);
     }
     setShowPopup(false);
@@ -88,7 +90,7 @@ export default function PainelSpy() {
           </p>
         </button>
 
-        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-green-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('WhatsApp', 39.90, '/payment/whatsapp')}>
+        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-green-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('WhatsApp', 49.90, 'https://checkout.perfectpay.com.br/pay/PPU38CPN5DS?upsell=true' + getQueryString('&'))}>
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <div className="bg-green-400 p-1.5 rounded-full">
@@ -103,7 +105,7 @@ export default function PainelSpy() {
           </p>
         </button>
 
-        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-blue-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('Facebook', 49.90, '/payment/facebook')}>
+        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-blue-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('Facebook', 29.90, 'https://checkout.perfectpay.com.br/pay/PPU38CPN5DM?upsell=true' + getQueryString('&'))}>
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <div className="bg-blue-500 p-1.5 rounded-full">
@@ -118,7 +120,7 @@ export default function PainelSpy() {
           </p>
         </button>
 
-        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-gray-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('+18', 59.90, '/payment/adult')}>
+        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-gray-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('+18', 29.90, 'https://checkout.perfectpay.com.br/pay/PPU38CPN5FJ?upsell=true' + getQueryString('&'))}>
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <div className="bg-red-500 p-1.5 rounded-full">
@@ -133,7 +135,7 @@ export default function PainelSpy() {
           </p>
         </button>
 
-        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-orange-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('Localização', 69.90, '/payment/location')}>
+        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-orange-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('Localização', 39.90, 'https://checkout.perfectpay.com.br/pay/PPU38CPN5FL?upsell=true' + getQueryString('&'))}>
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <div className="bg-orange-300 p-1.5 rounded-full">
@@ -148,7 +150,7 @@ export default function PainelSpy() {
           </p>
         </button>
 
-        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-yellow-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('Redes Sociais', 79.90, '/payment/social')}>
+        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-yellow-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('Redes Sociais', 29.90, 'https://checkout.perfectpay.com.br/pay/PPU38CPN5FR?upsell=true' + getQueryString('&'))}>
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <div className="bg-yellow-300 p-1.5 rounded-full">
@@ -163,7 +165,7 @@ export default function PainelSpy() {
           </p>
         </button>
 
-        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-gray-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('Câmera', 39.90, '/payment/camera')}>
+        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-gray-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('Câmera', 69.90, 'https://go.perfectpay.com.br/PPU38CPN5GB?upsell=true' + getQueryString('&'))}>
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <div className="bg-gray-300 p-1.5 rounded-full">
@@ -178,7 +180,7 @@ export default function PainelSpy() {
           </p>
         </button>
 
-        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-purple-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('Galeria', 49.90, '/payment/gallery')}>
+        <button className="border rounded-xl p-4 shadow-sm bg-white text-left relative transition hover:bg-purple-50 active:scale-[0.98] opacity-80" onClick={() => handleOpenPopup('Galeria', 39.90, 'https://checkout.perfectpay.com.br/pay/PPU38CPN5GH?upsell=true' + getQueryString('&'))}>
           <div className="flex justify-between items-center mb-2">
             <div className="flex items-center gap-2">
               <div className="bg-purple-300 p-1.5 rounded-full">
@@ -214,7 +216,7 @@ export default function PainelSpy() {
         </div>
         <button 
           className="bg-white text-pink-500 font-semibold py-2 px-4 rounded-lg w-full transition hover:bg-pink-50 active:scale-[0.98]"
-          onClick={() => handleOpenPopup('Todas as Licenças', 162.30, '/payment/all')}
+          onClick={() => handleOpenPopup('Todas as Licenças', 127.00, 'https://go.perfectpay.com.br/PPU38CPN5GH?upsell=true' + getQueryString('&'))}
         >
           Adquirir todas as licenças
         </button>
