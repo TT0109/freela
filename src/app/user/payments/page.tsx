@@ -1,5 +1,7 @@
 'use client';
 
+export const dynamic = 'force-dynamic';
+
 import React, { useState, useEffect } from 'react';
 import {
     Eye,
@@ -18,13 +20,17 @@ import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useSearchParmsStore } from '../store/searchParams';
 
-const PaymentPage: React.FC = ({ searchParams }: { searchParams?: any }) => {
+const PaymentPage: React.FC = () => {
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutos
     const user = useUserStore((state) => state.user);
     const [profileImage, setProfileImage] = useState<string | null>(null);
     const getQueryString = useSearchParmsStore(state=> state.getQueryString);
+    const [limitExceeded, setLimitExceeded] = useState(false);
 
-    const limitExceeded = searchParams['limitExeceded'] === 'true';
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        setLimitExceeded(params.get('limitExeceded') === 'true');
+    }, []);
 
     useEffect(() => {
         const load = async () => {

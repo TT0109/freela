@@ -1,6 +1,8 @@
 // stores/userStore.ts
 import { create } from "zustand";
-import axios from "axios";
+import { getFollowers, getFollowings } from "@/static/instagram/search";
+import { getStories } from "@/static/instagram/stories";
+import { getPublications } from "@/static/instagram/publications";
 
 type User = {
   id: string;
@@ -45,11 +47,9 @@ export const useUserStore = create<UserStore>((set) => ({
   
   getFollowers: async (userId, count = 10, maxId = null) => {
     try {
-      const response = await axios.get("/api/v1/instagram/search/followers", {
-        params: { userId, count, maxId },
-      });
-      set({ followers: response.data });
-      return response.data;
+      const followers = await getFollowers(userId);
+      set({ followers });
+      return followers;
     } catch (err) {
       console.error("Error fetching user followers:", err);
       throw err;
@@ -58,11 +58,9 @@ export const useUserStore = create<UserStore>((set) => ({
 
   getFollowings: async (userId, count = 10, maxId = null) => {
     try {
-      const response = await axios.get("/api/v1/instagram/search/followings", {
-        params: { userId, count, maxId },
-      });
-      set({ followings: response.data });
-      return response.data;
+      const followings = await getFollowings(userId);
+      set({ followings });
+      return followings;
     } catch (err) {
       console.error("Error fetching user followings:", err);
       throw err;
@@ -71,11 +69,9 @@ export const useUserStore = create<UserStore>((set) => ({
 
   getStories: async (userId, count = 10, maxId = null) => {
     try {
-      const response = await axios.get("/api/v1/instagram/stories", {
-        params: { userId, count, maxId },
-      });
-      set({ stories: response.data });
-      return response.data;
+      const stories = await getStories(userId);
+      set({ stories });
+      return stories;
     } catch (err) {
       console.error("Error fetching user stories:", err);
       throw err;
@@ -84,11 +80,9 @@ export const useUserStore = create<UserStore>((set) => ({
 
   getPublications: async (userId, count = 10, maxId = null) => {
     try {
-      const response = await axios.get("/api/v1/instagram/publications", {
-        params: { userId, count, maxId },
-      });
-      set({ publications: response.data });
-      return response.data;
+      const publications = await getPublications(userId);
+      set({ publications });
+      return publications;
     } catch (err) {
       console.error("Error fetching user publications:", err);
       throw err;

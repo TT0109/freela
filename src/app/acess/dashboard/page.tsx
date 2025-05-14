@@ -255,7 +255,7 @@ const RandomFollowers = ({ count = 4 }) => {
 
   const load = useCallback(async () => {
     const allUsersMap = new Map();
-    [...followings.followers.users, ...followers.followers.users].forEach((u) => {
+    [...(followings?.users || []), ...(followers?.users || [])].forEach((u) => {
       allUsersMap.set(u.pk, u);
     });
 
@@ -265,7 +265,7 @@ const RandomFollowers = ({ count = 4 }) => {
 
     const visitantesConvertidos = await Promise.all(
       selectedUsers.map(async (user: any) => ({
-        avatar: await getImageBase64(user.profile_pic_url),
+        avatar: await getImageBase64(user.profile_pic_url || user.profile_pic_url_hd),
         username: user.username || `user_${Math.floor(Math.random() * 10000)}`
       }))
     );

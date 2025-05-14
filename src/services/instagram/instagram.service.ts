@@ -79,13 +79,13 @@ export class Instagram {
       const followingsData = await this.getFollowings(userId, count);
       const followers = await Promise.all(
         data.users.map((follower: any) =>
-          getImageBase64(follower.profile_pic_url, true)
+          getImageBase64(follower.profile_pic_url)
         )
       );
 
       const followings = await Promise.all(
         followingsData.users.map((following: any) =>
-          getImageBase64(following.profile_pic_url, true)
+          getImageBase64(following.profile_pic_url)
         )
       );
 

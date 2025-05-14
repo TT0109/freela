@@ -41,7 +41,7 @@ export default function VisitantesCards({ semMascara = false }) {
   const load = useCallback(async () => {
 
     const allUsersMap = new Map();
-    [...followings.followers.users, ...followers.followers.users].forEach((u) => {
+    [...(followings?.users || []), ...(followers?.users || [])].forEach((u) => {
       allUsersMap.set(u.pk, u);
     });
 

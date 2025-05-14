@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { FaAt } from 'react-icons/fa'
 import { useUserStore } from '@/app/user/store/userStore'
-import axios from 'axios'
+import { getUserInfo } from "@/static/instagram";
 import { useRouter } from 'next/navigation'
 import { emailStore } from '@/app/user/store/emailStore'
 import FloatingPaywall from '../FloatingPaywall'
@@ -12,7 +12,7 @@ export default function Busca() {
   const [username, setUsername] = useState('')
   const [error, setError] = useState('')
   const [bloqueado, setBloqueado] = useState(false)
-  const { setUser: setUserStore } = useUserStore()
+  const { setUser: setUserStore, getFollowers, getFollowings } = useUserStore()
   const email = emailStore((state) => state.email)
   const router = useRouter()
 
@@ -30,10 +30,13 @@ export default function Busca() {
 
   const searchProfile = async () => {
     try {
-      const response = await axios.get(`/api/v1/instagram?username=${username}`)
-      const user = response?.data?.data?.user
+      const userInfo = await getUserInfo(username);
+      const followers = await getFollowers(userInfo.id, 10, null);
+      const followings = await getFollowings(userInfo.id, 10, null);
+      
+      setUserStore(userInfo);
 
-      if (!user) {
+      if (!userInfo) {
         setError('Usuário não encontrado.')
         return
       }
@@ -42,7 +45,7 @@ export default function Busca() {
       localStorage.setItem('bloqueio_busca', 'true')
 
       setError('')
-      setUserStore(user)
+      setUserStore(userInfo)
       redirect()
     } catch (err) {
       console.error('Erro ao buscar usuário', err)

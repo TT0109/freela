@@ -1,5 +1,7 @@
 import db from "@/app/config/db";
 
+export const dynamic = "force-static"
+
 export async function POST(request: Request) {
     const body = await request.json();
     const { email, username } = body;

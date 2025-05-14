@@ -1,5 +1,4 @@
 // actions/getLastWeekDates.ts
-'use server'
 
 import moment from 'moment'
 

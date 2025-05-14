@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaMapMarkerAlt, FaExclamationTriangle } from 'react-icons/fa';
 import { BsFillPersonLinesFill } from 'react-icons/bs';
+import { getOnblueImages } from "@/static/instagram/images";
 import axios from 'axios';
 import Image from 'next/image';
 
@@ -28,7 +29,8 @@ const StalkerAlert = ({ userId }) => {
     const fetchImages = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(`/api/v1/instagram/images/onblueImages?userId=${userId}`);
+        const imagesBlur = await getOnblueImages(userId);
+        const res = { data: imagesBlur };
         setImagesBlur(res.data?.imagesBlur || []);
       } catch (err) {
         console.error('Erro ao buscar imagens com blur:', err);

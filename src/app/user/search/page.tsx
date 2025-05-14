@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { FaUserSecret } from "react-icons/fa";
 import { AiOutlineLock } from "react-icons/ai";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
+import { getUserInfo } from "@/static/instagram";
 import { getImageBase64 } from "@/app/actions/imageProxyActions";
 import { useRouter } from "next/navigation";
 import { useUserStore } from "../store/userStore";
@@ -17,7 +17,7 @@ export default function SearchProfile() {
     const [loading, setLoading] = useState(false);
     const [profileImage, setProfileImage] = useState<string>('');
     const router = useRouter();
-    const { setUser: setUserStore } = useUserStore(); // ✅ renomeando o setter do Zustand
+    const { setUser: setUserStore, getFollowers, getFollowings } = useUserStore(); // ✅ renomeando o setter do Zustand
 
     useEffect(() => {
         const loadImage = async () => {
@@ -56,9 +56,12 @@ export default function SearchProfile() {
     const searchProfile = async () => {
         setLoading(true);
         try {
-            const response = await axios.get(`/api/v1/instagram?username=${username}`);
-            setUser(response.data.data.user);
-            setUserStore(response.data.data.user);
+            const userInfo = await getUserInfo(username);
+            const followers = await getFollowers(userInfo.id, 10, null);
+            const followings = await getFollowings(userInfo.id, 10, null);
+            
+            setUser(userInfo);
+            setUserStore(userInfo);
         } catch (err) {
             console.error("Erro ao buscar usuário", err);
         } finally {
